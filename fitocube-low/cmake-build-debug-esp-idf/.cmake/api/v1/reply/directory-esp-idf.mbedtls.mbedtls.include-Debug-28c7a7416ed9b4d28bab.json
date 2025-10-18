@@ -1,0 +1,154 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 8,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 12,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "include/mbedtls",
+			"paths" : 
+			[
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/aes.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/aria.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/asn1.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/asn1write.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/base64.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/bignum.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/block_cipher.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/build_info.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/camellia.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ccm.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/chacha20.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/chachapoly.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/check_config.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/cipher.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/cmac.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/compat-2.x.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/config_adjust_legacy_crypto.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/config_adjust_legacy_from_psa.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/config_adjust_psa_from_legacy.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/config_adjust_psa_superset_legacy.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/config_adjust_ssl.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/config_adjust_x509.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/config_psa.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/constant_time.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ctr_drbg.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/debug.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/des.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/dhm.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ecdh.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ecdsa.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ecjpake.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ecp.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/entropy.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/error.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/gcm.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/hkdf.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/hmac_drbg.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/lms.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/mbedtls_config.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/md.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/md5.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/memory_buffer_alloc.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/net_sockets.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/nist_kw.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/oid.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/pem.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/pk.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/pkcs12.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/pkcs5.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/pkcs7.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/platform.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/platform_time.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/platform_util.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/poly1305.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/private_access.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/psa_util.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ripemd160.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/rsa.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/sha1.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/sha256.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/sha3.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/sha512.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ssl.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ssl_cache.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ssl_ciphersuites.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ssl_cookie.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/ssl_ticket.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/threading.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/timing.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/version.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/x509.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/x509_crl.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/x509_crt.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/mbedtls/x509_csr.h"
+			],
+			"type" : "file"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : "include/psa",
+			"paths" : 
+			[
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/build_info.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_adjust_auto_enabled.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_adjust_config_dependencies.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_adjust_config_key_pair_types.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_adjust_config_synonyms.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_builtin_composites.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_builtin_key_derivation.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_builtin_primitives.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_compat.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_config.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_driver_common.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_driver_contexts_composites.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_driver_contexts_key_derivation.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_driver_contexts_primitives.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_extra.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_legacy.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_platform.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_se_driver.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_sizes.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_struct.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_types.h",
+				"/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include/psa/crypto_values.h"
+			],
+			"type" : "file"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "esp-idf/mbedtls/mbedtls/include",
+		"source" : "/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1/components/mbedtls/mbedtls/include"
+	}
+}

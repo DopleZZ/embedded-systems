@@ -1,0 +1,2 @@
+source /Users/montana/MyLabs/embedded-systems/fitocube-low/cmake-build-debug-esp-idf/bootloader/gdbinit/symbols
+source /Users/montana/MyLabs/embedded-systems/fitocube-low/cmake-build-debug-esp-idf/bootloader/gdbinit/connect

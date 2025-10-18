@@ -1,0 +1,15 @@
+menu "Blink example settings"
+
+config BLINK_GPIO
+    int "GPIO number"
+    default 2
+    help
+        GPIO pin used for the LED.
+
+config BLINK_PERIOD_MS
+    int "Blink period (ms)"
+    default 500
+    help
+        Delay in milliseconds between toggles.
+
+endmenu
