@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+mqtt:
+  broker-uri: tcp://localhost:1883
+  client-id: fitocube-backend
+  command-topic: soil/cmd
+  data-topic: soil/data
+  command-payload: get_info
+  response-timeout: 5s
