@@ -2,9 +2,6 @@ openapi: 3.0.3
 info:
   title: Fitocube Plant API
   version: 1.0.0
-  description: |
-    API для платформы Fitocube. Покрывает регистрацию пользователей, управление растениями,
-    дружеские запросы, мини-игры (батлы настроения, недельный челлендж) и статистику.
 servers:
   - url: http://localhost:8080/v1
     description: Local development
@@ -541,10 +538,6 @@ components:
         dropsReward:
           type: integer
           description: Сколько капель начисляется победителю
-        dropsWinnerReceived:
-          type: integer
-          nullable: true
-          description: Сколько капель уже отправлено (0, если батл не завершён)
     PlantChallengeDto:
       type: object
       properties:
