@@ -1,0 +1,572 @@
+openapi: 3.0.3
+info:
+  title: Fitocube Plant API
+  version: 1.0.0
+  description: |
+    API для платформы Fitocube. Покрывает регистрацию пользователей, управление растениями,
+    дружеские запросы, мини-игры (батлы настроения, недельный челлендж) и статистику.
+servers:
+  - url: http://localhost:8080/v1
+    description: Local development
+paths:
+  /users:
+    post:
+      summary: Зарегистрировать пользователя по имени
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: Пользователь создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+  /users/{userId}:
+    get:
+      summary: Получить информацию о пользователе
+      operationId: getUserById
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Пользователь
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '404':
+          description: Пользователь не найден
+  /plants/{plantId}:
+    get:
+      summary: Получить текущее состояние своего растения
+      operationId: getPlantState
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: plantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Состояние растения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlantStateDto'
+        '404':
+          description: Растение не найдено
+  /plants/by-owner:
+    get:
+      summary: Получить список растений пользователя
+      operationId: listPlantsByOwner
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: ownerId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Список растений
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlantStateDto'
+  /plants/by-friend-name:
+    get:
+      summary: Посмотреть состояние растений друга по его имени
+      operationId: listPlantsByFriendName
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: friendName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список растений друга
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlantStateDto'
+        '404':
+          description: Пользователь или его растения не найдены
+  /plants/watering:
+    post:
+      summary: Запустить полив растения
+      operationId: triggerWatering
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: plantId
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                durationSeconds:
+                  type: integer
+                  minimum: 1
+                  description: Длительность полива в секундах (опционально)
+      responses:
+        '202':
+          description: Команда на полив отправлена
+        '404':
+          description: Растение не найдено
+  /plants/claim:
+    post:
+      summary: Привязать устройство к текущему пользователю
+      operationId: claimPlantDevice
+      security:
+        - UserNameAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - deviceUid
+              properties:
+                deviceUid:
+                  type: string
+                  description: Уникальный код устройства
+                nickname:
+                  type: string
+                  description: Имя растения
+      responses:
+        '201':
+          description: Устройство привязано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlantStateDto'
+        '400':
+          description: Устройство уже привязано
+  /friends:
+    get:
+      summary: Получить список друзей пользователя
+      operationId: listFriends
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Список друзей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDto'
+  /friends/request:
+    post:
+      summary: Отправить запрос на добавление в друзья
+      operationId: sendFriendRequest
+      security:
+        - UserNameAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFriendRequest'
+      responses:
+        '201':
+          description: Запрос создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendRequestDto'
+        '404':
+          description: Пользователь-цель не найден
+  /friends/request/incoming:
+    get:
+      summary: Посмотреть входящие запросы в друзья
+      operationId: listIncomingFriendRequests
+      security:
+        - UserNameAuth: []
+      responses:
+        '200':
+          description: Входящие запросы
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FriendRequestDto'
+  /friends/request/outgoing:
+    get:
+      summary: Посмотреть исходящие запросы в друзья
+      operationId: listOutgoingFriendRequests
+      security:
+        - UserNameAuth: []
+      responses:
+        '200':
+          description: Исходящие запросы
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FriendRequestDto'
+  /friends/request/{requestId}/accept:
+    post:
+      summary: Принять запрос в друзья
+      operationId: acceptFriendRequest
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Запрос принят
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '404':
+          description: Запрос не найден
+  /friends/request/{requestId}/reject:
+    post:
+      summary: Отклонить запрос в друзья
+      operationId: rejectFriendRequest
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: requestId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Запрос отклонён
+        '404':
+          description: Запрос не найден
+  /stats/{userId}:
+    get:
+      summary: Получить статистику по наградам и мини-играм пользователя
+      operationId: getPlayerStats
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Статистика пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerStatsDto'
+        '404':
+          description: Пользователь не найден
+  /games/mood-battles:
+    post:
+      summary: Запустить батл настроения между двумя растениями
+      operationId: startMoodBattle
+      security:
+        - UserNameAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMoodBattleRequest'
+      responses:
+        '201':
+          description: Батл создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoodBattleDto'
+        '400':
+          description: Нельзя запустить батл для этих растений
+  /games/mood-battles/{battleId}:
+    get:
+      summary: Получить статус батла настроения
+      operationId: getMoodBattle
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: battleId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Информация о батле
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoodBattleDto'
+        '404':
+          description: Батл не найден
+  /games/wellbeing-challenge:
+    get:
+      summary: Посмотреть прогресс недельного челленджа "цветок счастья"
+      operationId: getWeeklyChallenge
+      security:
+        - UserNameAuth: []
+      parameters:
+        - name: plantId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Статистика челленджа
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlantChallengeDto'
+        '404':
+          description: Растение не участвует в челлендже
+components:
+  schemas:
+    UserDto:
+      type: object
+      properties:
+        userId:
+          type: integer
+        userName:
+          type: string
+        displayName:
+          type: string
+          description: Дополнительное имя для отображения
+        friends:
+          type: array
+          description: Список идентификаторов друзей пользователя
+          items:
+            type: integer
+    CreateUserRequest:
+      type: object
+      required:
+        - userName
+      properties:
+        userName:
+          type: string
+        displayName:
+          type: string
+    PlantStateDto:
+      type: object
+      properties:
+        plantId:
+          type: integer
+        deviceUid:
+          type: string
+          description: Аппаратный идентификатор устройства
+        owner:
+          $ref: '#/components/schemas/UserDto'
+        nickname:
+          type: string
+          description: Название растения, заданное владельцем
+        measurements:
+          type: object
+          properties:
+            airTemperatureC:
+              type: number
+              format: float
+            airHumidityPercent:
+              type: number
+              format: float
+            soilMoisturePercent:
+              type: number
+              format: float
+            soilMoistureRaw:
+              type: integer
+            timestamp:
+              type: string
+              format: date-time
+        mood:
+          type: string
+          enum:
+            - happy
+            - normal
+            - thirsty
+            - dry
+            - hot
+            - cold
+        statusMessage:
+          type: string
+        friendVisible:
+          type: boolean
+      example:
+        plantId: 42
+        deviceUid: "esp32-d34-202501"
+        owner:
+          userId: 7
+          userName: "montana"
+          displayName: "Nikola"
+          friends: [3, 9]
+        nickname: "Фикус"
+        measurements:
+          airTemperatureC: 23.5
+          airHumidityPercent: 48.0
+          soilMoisturePercent: 35.2
+          timestamp: "2025-01-25T12:00:00Z"
+        mood: happy
+        statusMessage: "Все отлично"
+        friendVisible: true
+    CreateFriendRequest:
+      type: object
+      required:
+        - requesterId
+        - targetName
+      properties:
+        requesterId:
+          type: integer
+        targetName:
+          type: string
+        message:
+          type: string
+    FriendRequestDto:
+      type: object
+      properties:
+        requestId:
+          type: integer
+        requester:
+          $ref: '#/components/schemas/UserDto'
+        target:
+          $ref: '#/components/schemas/UserDto'
+        status:
+          type: string
+          enum:
+            - pending
+            - accepted
+            - rejected
+        createdAt:
+          type: string
+          format: date-time
+    PlayerStatsDto:
+      type: object
+      properties:
+        userId:
+          type: integer
+        totalHappyHours:
+          type: number
+          format: float
+        moodBattlesWon:
+          type: integer
+        moodBattlesLost:
+          type: integer
+        dropsEarned:
+          type: integer
+        lastUpdated:
+          type: string
+          format: date-time
+    CreateMoodBattleRequest:
+      type: object
+      required:
+        - challengerPlantId
+        - opponentPlantId
+      properties:
+        challengerPlantId:
+          type: integer
+        opponentPlantId:
+          type: integer
+        durationHours:
+          type: integer
+          description: Длительность батла (по умолчанию 24 часа)
+    MoodBattleDto:
+      type: object
+      properties:
+        battleId:
+          type: integer
+        challengerPlantId:
+          type: integer
+        opponentPlantId:
+          type: integer
+        challengerScoreHours:
+          type: number
+          format: float
+          description: Сколько часов растение было в состоянии happy
+        opponentScoreHours:
+          type: number
+          format: float
+        status:
+          type: string
+          enum: [pending, active, finished]
+        startedAt:
+          type: string
+          format: date-time
+        finishesAt:
+          type: string
+          format: date-time
+        winnerPlantId:
+          type: integer
+          nullable: true
+        dropsReward:
+          type: integer
+          description: Сколько капель начисляется победителю
+        dropsWinnerReceived:
+          type: integer
+          nullable: true
+          description: Сколько капель уже отправлено (0, если батл не завершён)
+    PlantChallengeDto:
+      type: object
+      properties:
+        challengeId:
+          type: integer
+        plantId:
+          type: integer
+        weekStart:
+          type: string
+          format: date
+        goalHappyHours:
+          type: number
+          format: float
+        achievedHappyHours:
+          type: number
+          format: float
+        status:
+          type: string
+          enum: [in_progress, completed, failed]
+  securitySchemes:
+    UserNameAuth:
+      type: apiKey
+      in: header
+      name: X-User-Name
+      description: Простой механизм аутентификации по имени пользователя
