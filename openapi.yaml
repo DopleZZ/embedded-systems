@@ -2,14 +2,30 @@ openapi: 3.0.3
 info:
   title: Fitocube Plant API
   version: 1.0.0
+  description: |
+    API для платформы Fitocube. Включает регистрацию/логин пользователей (cookie-сессия),
+    управление растениями, дружеские запросы, мини-игры и статистику.
+tags:
+  - name: auth
+    description: Регистрация и логин
+  - name: plants
+    description: Растения
+  - name: friends
+    description: Друзья
+  - name: stats
+    description: Статистика
+  - name: games
+    description: Игры
 servers:
   - url: http://localhost:8080/v1
     description: Local development
+# Authentication & Users
 paths:
-  /users:
+  /auth/register:
     post:
       summary: Зарегистрировать пользователя по имени
       operationId: registerUser
+      tags: [auth]
       requestBody:
         required: true
         content:
@@ -23,33 +39,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDto'
-  /users/{userId}:
-    get:
-      summary: Получить информацию о пользователе
-      operationId: getUserById
-      security:
-        - UserNameAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: integer
+  /auth/login:
+    post:
+      summary: Выполнить вход по логину и паролю
+      operationId: login
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
-          description: Пользователь
-          content:
-            application/json:
+          description: Успешный вход, устанавливается сессионная cookie
+          headers:
+            Set-Cookie:
               schema:
-                $ref: '#/components/schemas/UserDto'
-        '404':
-          description: Пользователь не найден
+                type: string
+                example: SESSION=abcd1234; HttpOnly; Path=/
+        '401':
+          description: Неверный логин/пароль
+  # Plant Management
   /plants/{plantId}:
     get:
       summary: Получить текущее состояние своего растения
       operationId: getPlantState
+      tags: [plants]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: plantId
           in: path
@@ -69,8 +87,9 @@ paths:
     get:
       summary: Получить список растений пользователя
       operationId: listPlantsByOwner
+      tags: [plants]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: ownerId
           in: query
@@ -90,8 +109,9 @@ paths:
     get:
       summary: Посмотреть состояние растений друга по его имени
       operationId: listPlantsByFriendName
+      tags: [plants]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: friendName
           in: query
@@ -113,8 +133,9 @@ paths:
     post:
       summary: Запустить полив растения
       operationId: triggerWatering
+      tags: [plants]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: plantId
           in: query
@@ -141,8 +162,9 @@ paths:
     post:
       summary: Привязать устройство к текущему пользователю
       operationId: claimPlantDevice
+      tags: [plants]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       requestBody:
         required: true
         content:
@@ -167,12 +189,14 @@ paths:
                 $ref: '#/components/schemas/PlantStateDto'
         '400':
           description: Устройство уже привязано
+  # Friend Management
   /friends:
     get:
       summary: Получить список друзей пользователя
       operationId: listFriends
+      tags: [friends]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: userId
           in: query
@@ -192,8 +216,9 @@ paths:
     post:
       summary: Отправить запрос на добавление в друзья
       operationId: sendFriendRequest
+      tags: [friends]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       requestBody:
         required: true
         content:
@@ -213,8 +238,9 @@ paths:
     get:
       summary: Посмотреть входящие запросы в друзья
       operationId: listIncomingFriendRequests
+      tags: [friends]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       responses:
         '200':
           description: Входящие запросы
@@ -228,8 +254,9 @@ paths:
     get:
       summary: Посмотреть исходящие запросы в друзья
       operationId: listOutgoingFriendRequests
+      tags: [friends]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       responses:
         '200':
           description: Исходящие запросы
@@ -243,8 +270,9 @@ paths:
     post:
       summary: Принять запрос в друзья
       operationId: acceptFriendRequest
+      tags: [friends]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: requestId
           in: path
@@ -264,8 +292,9 @@ paths:
     post:
       summary: Отклонить запрос в друзья
       operationId: rejectFriendRequest
+      tags: [friends]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: requestId
           in: path
@@ -277,12 +306,14 @@ paths:
           description: Запрос отклонён
         '404':
           description: Запрос не найден
+  # Player Statistics
   /stats/{userId}:
     get:
       summary: Получить статистику по наградам и мини-играм пользователя
       operationId: getPlayerStats
+      tags: [stats]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: userId
           in: path
@@ -298,12 +329,14 @@ paths:
                 $ref: '#/components/schemas/PlayerStatsDto'
         '404':
           description: Пользователь не найден
+  # Mini Games & Challenges
   /games/mood-battles:
     post:
       summary: Запустить батл настроения между двумя растениями
       operationId: startMoodBattle
+      tags: [games]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       requestBody:
         required: true
         content:
@@ -323,8 +356,9 @@ paths:
     get:
       summary: Получить статус батла настроения
       operationId: getMoodBattle
+      tags: [games]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: battleId
           in: path
@@ -344,8 +378,9 @@ paths:
     get:
       summary: Посмотреть прогресс недельного челленджа "цветок счастья"
       operationId: getWeeklyChallenge
+      tags: [games]
       security:
-        - UserNameAuth: []
+        - SessionCookie: []
       parameters:
         - name: plantId
           in: query
@@ -382,11 +417,27 @@ components:
       type: object
       required:
         - userName
+        - password
       properties:
         userName:
           type: string
         displayName:
           type: string
+        password:
+          type: string
+          format: password
+          description: Пароль для входа
+    LoginRequest:
+      type: object
+      required:
+        - userName
+        - password
+      properties:
+        userName:
+          type: string
+        password:
+          type: string
+          format: password
     PlantStateDto:
       type: object
       properties:
@@ -426,8 +477,6 @@ components:
             - dry
             - hot
             - cold
-        statusMessage:
-          type: string
         friendVisible:
           type: boolean
       example:
@@ -445,7 +494,6 @@ components:
           soilMoisturePercent: 35.2
           timestamp: "2025-01-25T12:00:00Z"
         mood: happy
-        statusMessage: "Все отлично"
         friendVisible: true
     CreateFriendRequest:
       type: object
@@ -456,8 +504,6 @@ components:
         requesterId:
           type: integer
         targetName:
-          type: string
-        message:
           type: string
     FriendRequestDto:
       type: object
@@ -558,8 +604,8 @@ components:
           type: string
           enum: [in_progress, completed, failed]
   securitySchemes:
-    UserNameAuth:
+    SessionCookie:
       type: apiKey
-      in: header
-      name: X-User-Name
-      description: Простой механизм аутентификации по имени пользователя
+      in: cookie
+      name: SESSION
+      description: Сессионная cookie (HttpOnly). Получается после /auth/login и используется для всех защищённых запросов.
