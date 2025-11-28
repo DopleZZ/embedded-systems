@@ -2,19 +2,12 @@ package com.fitocube.backend.mqtt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitocube.backend.config.MqttProperties;
-import com.fitocube.backend.model.SoilMeasurement;
+import com.fitocube.backend.model.PlantMeasurementsDto;
+import com.fitocube.backend.model.PlantStateDto;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicReference;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -33,8 +26,7 @@ public class MqttGateway implements MqttCallback {
 
     private final MqttProperties properties;
     private final ObjectMapper objectMapper;
-    private final AtomicReference<SoilMeasurement> lastMeasurement = new AtomicReference<>();
-    private final List<CompletableFuture<SoilMeasurement>> pendingRequests = new CopyOnWriteArrayList<>();
+    
     private MqttClient client;
 
     @PostConstruct
@@ -83,18 +75,12 @@ public class MqttGateway implements MqttCallback {
         }
     }
 
-    public Optional<SoilMeasurement> getLastMeasurement() {
-        return Optional.ofNullable(lastMeasurement.get());
-    }
-
-    public Optional<SoilMeasurement> requestFreshMeasurement() {
+    public boolean requestFreshMeasurement() {
         if (client == null || !client.isConnected()) {
             log.warn("MQTT клиент не подключен");
-            return Optional.empty();
+            return false;
         }
 
-        CompletableFuture<SoilMeasurement> future = new CompletableFuture<>();
-        pendingRequests.add(future);
         try {
             MqttMessage message = new MqttMessage(properties.getCommandPayload().getBytes(StandardCharsets.UTF_8));
             message.setQos(1);
@@ -102,24 +88,12 @@ public class MqttGateway implements MqttCallback {
             log.info("Опубликована команда {} в {}",
                      properties.getCommandPayload(),
                      properties.getCommandTopic());
-
-            Duration timeout = properties.getResponseTimeout();
-            SoilMeasurement measurement = future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
-            return Optional.ofNullable(measurement);
-        }
-        catch (TimeoutException timeoutException) {
-            log.warn("Ответ с измерениями не пришёл за {}", properties.getResponseTimeout());
-            future.cancel(true);
-            return Optional.empty();
         }
         catch (Exception e) {
-            log.error("Ошибка при ожидании ответа от MQTT", e);
-            future.cancel(true);
-            return Optional.empty();
+            log.error("Ошибка при отправке команды через MQTT", e);
+            return false;
         }
-        finally {
-            pendingRequests.remove(future);
-        }
+        return true;
     }
 
     @Override
@@ -134,12 +108,15 @@ public class MqttGateway implements MqttCallback {
         }
 
         try {
-            SoilMeasurement measurement = objectMapper.readValue(message.getPayload(), SoilMeasurement.class);
-            lastMeasurement.set(measurement);
-            pendingRequests.forEach(future -> future.complete(measurement));
-            log.info("Получены данные из MQTT: raw={}, voltageMv={}",
-                     measurement.getRaw(),
-                     measurement.getVoltageMv());
+            PlantStateDto plantState = objectMapper.readValue(message.getPayload(), PlantStateDto.class);
+            PlantMeasurementsDto measurements = plantState.getMeasurements();
+            if (measurements == null) {
+                log.warn("Получено сообщение без блока measurements, пропускаем: {}", message);
+                return;
+            }
+
+
+            //TODO сохранение в бд
         }
         catch (Exception e) {
             log.error("Не удалось распарсить MQTT сообщение", e);

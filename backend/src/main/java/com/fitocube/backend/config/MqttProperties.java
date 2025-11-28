@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "mqtt")
 public class MqttProperties {
 
-    private String brokerUri = "tcp://localhost:1883";
+    private String brokerUri = "mqtt://azat222.ru:1883";
     private String clientId = "fitocube-backend";
     private String username;
     private String password;
