@@ -15,7 +15,7 @@ services:
       - fitocube_net
   db:
     image: postgres:15
-    container_name: db-organizations
+    container_name: db-embedded
     environment:
       - POSTGRES_DB=embedded
       - POSTGRES_USER=embedded
