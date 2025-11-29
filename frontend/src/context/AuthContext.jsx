@@ -1,25 +1,18 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+// Мок пользователя - временно отключена авторизация
+const MOCK_USER = {
+  userName: 'montana',
+  userId: 1,
+  displayName: 'Montana',
+}
 
-  // Загружаем сохраненного пользователя из localStorage при загрузке
-  useEffect(() => {
-    const savedUser = localStorage.getItem('fitocube_user')
-    if (savedUser) {
-      try {
-        const userData = JSON.parse(savedUser)
-        setUser(userData)
-        setIsAuthenticated(true)
-      } catch (e) {
-        console.error('Ошибка загрузки пользователя:', e)
-        localStorage.removeItem('fitocube_user')
-      }
-    }
-  }, [])
+export function AuthProvider({ children }) {
+  // Авторизация временно отключена - всегда залогинен мок пользователь
+  const [user] = useState(MOCK_USER)
+  const [isAuthenticated] = useState(true)
 
   const login = (userData) => {
     setUser(userData)

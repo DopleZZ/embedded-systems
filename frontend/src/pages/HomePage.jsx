@@ -11,14 +11,11 @@ function HomePage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    if (isAuthenticated && userName) {
+    if (userName) {
       loadPlants()
-    } else {
-      setLoading(false)
-      setError('Необходима авторизация')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, userName])
+  }, [userName])
 
   const loadPlants = async () => {
     if (!userName) return
@@ -42,7 +39,7 @@ function HomePage() {
       <header className="home-header">
         <h1 className="home-title">🌱 Fitocube</h1>
         <p className="home-subtitle">Твои растения</p>
-        {isAuthenticated && userName && (
+        {userName && (
           <p className="home-user">Пользователь: {userName}</p>
         )}
       </header>
