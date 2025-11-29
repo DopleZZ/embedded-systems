@@ -1,9 +1,11 @@
 package com.fitocube.backend.services;
 
-
+import com.fitocube.backend.model.UserDto;
 import com.fitocube.backend.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,5 +24,11 @@ public class UserService {
         log.info("size is" + size);
     }
 
+    public Optional<UserDto> findByUserName(String userName) {
+        return userRepository.findByUserNameIgnoreCase(userName);
+    }
 
+    public Optional<UserDto> findById(@NonNull Long userId) {
+        return userRepository.findById(userId);
+    }
 }
