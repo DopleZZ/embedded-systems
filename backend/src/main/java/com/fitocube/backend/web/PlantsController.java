@@ -4,10 +4,10 @@ import com.fitocube.backend.model.PlantStateDto;
 import com.fitocube.backend.model.request.ClaimRequest;
 import com.fitocube.backend.services.PlantService;
 import com.fitocube.backend.services.SessionService;
-import jakarta.servlet.http.HttpSession;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +31,7 @@ public class PlantsController {
     }
 
     @GetMapping("/{plantId}")
-    public ResponseEntity<PlantStateDto> getPlantById(@PathVariable Long plantId) {
+    public ResponseEntity<PlantStateDto> getPlantById(@PathVariable @NonNull Long plantId) {
         return plantService.getPlantById(plantId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -39,9 +39,8 @@ public class PlantsController {
 
     @GetMapping("/by-owner")
     public ResponseEntity<Set<PlantStateDto>> getAllPlantsByOwner(
-            @RequestParam(value = "ownerName", required = false) String requestedOwner,
-            HttpSession session) {
-        var sessionUser = sessionService.requireSessionUser(session);
+            @RequestParam(value = "ownerName", required = false) String requestedOwner) {
+        var sessionUser = sessionService.requireSessionUser();
         sessionService.ensureSameUser(requestedOwner, sessionUser);
 
         var set = plantService.getAllPlantsByOwner(sessionUser.userName());
@@ -49,12 +48,11 @@ public class PlantsController {
     }
 
     @PostMapping("/claim")
-    public ResponseEntity<PlantStateDto> claimPlant(@RequestBody ClaimRequest claimRequest,
-                                                    HttpSession session) {
+    public ResponseEntity<PlantStateDto> claimPlant(@RequestBody ClaimRequest claimRequest) {
         if (!StringUtils.hasText(claimRequest.getDeviceUid())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "deviceUid is required");
         }
-        var owner = sessionService.requireSessionUserEntity(session);
+        var owner = sessionService.requireSessionUserEntity();
         return plantService.claimPlant(owner, claimRequest)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.badRequest().build());

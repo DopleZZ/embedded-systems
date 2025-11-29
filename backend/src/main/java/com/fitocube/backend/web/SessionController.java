@@ -3,6 +3,7 @@ package com.fitocube.backend.web;
 import com.fitocube.backend.model.request.LoginRequest;
 import com.fitocube.backend.model.session.SessionUser;
 import com.fitocube.backend.services.SessionService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +23,14 @@ public class SessionController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<SessionUser> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
-        var sessionUser = sessionService.login(loginRequest.getUsername(), session);
+    public ResponseEntity<SessionUser> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+        var sessionUser = sessionService.login(loginRequest.getUsername(), request);
         return ResponseEntity.ok(sessionUser);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<SessionUser> currentSession(HttpSession session) {
-        var sessionUser = sessionService.requireSessionUser(session);
+    public ResponseEntity<SessionUser> currentSession() {
+        var sessionUser = sessionService.requireSessionUser();
         return ResponseEntity.ok(sessionUser);
     }
 
