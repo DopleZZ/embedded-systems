@@ -96,7 +96,7 @@ function PlantDetailPage() {
           <div className="plant-detail-emoji">{moodEmoji}</div>
           <div className="plant-detail-title">
             <h1>{plant.nickname || 'Без имени'}</h1>
-            <p className="plant-detail-mood">{moodLabel}</p>
+            <p className="plant-detail-mood">{moodEmoji} {moodLabel}</p>
           </div>
         </div>
 
@@ -168,18 +168,6 @@ function PlantDetailPage() {
                     </div>
                   </div>
                 </div>
-
-                {plant.measurements.soilMoistureRaw !== undefined && (
-                  <div className="measurement-card">
-                    <div className="measurement-icon">📈</div>
-                    <div className="measurement-content">
-                      <div className="measurement-label">Влажность почвы (сырое значение)</div>
-                      <div className="measurement-value">
-                        {plant.measurements.soilMoistureRaw}
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {plant.measurements.timestamp && (
                   <div className="measurement-card full-width">
