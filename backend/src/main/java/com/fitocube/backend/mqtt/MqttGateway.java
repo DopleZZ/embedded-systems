@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitocube.backend.config.MqttProperties;
 import com.fitocube.backend.model.PlantMeasurementsDto;
 import com.fitocube.backend.model.PlantStateDto;
+import com.fitocube.backend.services.PlantService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +27,8 @@ public class MqttGateway implements MqttCallback {
 
     private final MqttProperties properties;
     private final ObjectMapper objectMapper;
-    
+    private final PlantService plantService;
+
     private MqttClient client;
 
     @PostConstruct
@@ -115,8 +117,8 @@ public class MqttGateway implements MqttCallback {
                 return;
             }
 
-
-            //TODO сохранение в бд
+            log.info(plantState.toString());
+            plantService.savePlant(plantState);
         }
         catch (Exception e) {
             log.error("Не удалось распарсить MQTT сообщение", e);
