@@ -13,7 +13,27 @@ services:
       - ./mosquitto/log:/mosquitto/log
     networks:
       - fitocube_net
+  db:
+    image: postgres:15
+    container_name: db-organizations
+    environment:
+      - POSTGRES_DB=embedded
+      - POSTGRES_USER=embedded
+      - POSTGRES_PASSWORD=embedded
+    ports:
+      - 5555:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U study -d study" ]
+      interval: 5s
+      timeout: 1s
+      retries: 10
+    restart: unless-stopped
 
 networks:
   fitocube_net:
     driver: bridge
+
+volumes:
+  db-data:
