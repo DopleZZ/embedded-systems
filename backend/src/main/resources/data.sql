@@ -1,7 +1,7 @@
-INSERT INTO users (user_id, user_name, display_name) VALUES
-    (1, 'montana', 'Montana'),
-    (2, 'nikola', 'Nikola Tesla'),
-    (3, 'ada', 'Ada Lovelace')
+INSERT INTO users (user_id, user_name, display_name, password_hash) VALUES
+    (1, 'montana', 'Montana', '$2y$10$O3/yf5ZjKFVjB6IsOewbV.6XZar4FlXgladt0a1IVE7/27P8F0saO'),
+    (2, 'nikola', 'Nikola Tesla', '$2y$10$BZ823gqXZv4ROEp.tXb46e//ag01G0VavvBmUKDHkk0jl1ahBiLqy'),
+    (3, 'ada', 'Ada Lovelace', '$2y$10$g04k1AaxUb4A2vL1unOSQOjNP0f7dMf6Z.xQ238HsNyF624LpMVXO')
 ON CONFLICT DO NOTHING;
 
 

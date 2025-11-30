@@ -2,9 +2,18 @@ package com.fitocube.backend.services;
 
 import com.fitocube.backend.model.UserDto;
 import com.fitocube.backend.model.session.SessionUser;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,41 +21,57 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class SessionService {
 
-    private static final String SESSION_ATTRIBUTE = "FITOCUBE_SESSION_USER";
-
     private final UserService userService;
+    private final SecurityContextRepository securityContextRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public SessionService(UserService userService) {
+    public SessionService(UserService userService,
+                          SecurityContextRepository securityContextRepository,
+                          PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.securityContextRepository = securityContextRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public SessionUser login(String rawUsername, HttpSession session) {
+    public SessionUser login(String rawUsername,
+                             String rawPassword,
+                             HttpServletRequest request,
+                             HttpServletResponse response) {
         var username = Optional.ofNullable(rawUsername)
                 .map(String::trim)
                 .filter(StringUtils::hasText)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is required"));
 
+        var password = Optional.ofNullable(rawPassword)
+                .filter(StringUtils::hasText)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is required"));
+
         var user = userService.findByUserName(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unknown user"));
 
-        var sessionUser = new SessionUser(user.getUserId(), user.getUserName(), user.getDisplayName());
-        session.setAttribute(SESSION_ATTRIBUTE, sessionUser);
-        return sessionUser;
+        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+        }
+
+        return persistAuthentication(user, request, response);
     }
 
-    public Optional<SessionUser> getCurrentUser(HttpSession session) {
-        return Optional.ofNullable(session)
-                .map(s -> s.getAttribute(SESSION_ATTRIBUTE))
+    public Optional<SessionUser> getCurrentUser() {
+        return Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .filter(Authentication::isAuthenticated)
+                .map(Authentication::getPrincipal)
+                .filter(SessionUser.class::isInstance)
                 .map(SessionUser.class::cast);
     }
 
-    public SessionUser requireSessionUser(HttpSession session) {
-        return getCurrentUser(session)
+    public SessionUser requireSessionUser() {
+        return getCurrentUser()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No active session"));
     }
 
-    public UserDto requireSessionUserEntity(HttpSession session) {
-        var sessionUser = requireSessionUser(session);
+    public UserDto requireSessionUserEntity() {
+        var sessionUser = requireSessionUser();
         return userService.findById(sessionUser.id())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
     }
@@ -58,15 +83,19 @@ public class SessionService {
         }
     }
 
-    public void logout(HttpSession session) {
-        if (session == null) {
-            return;
-        }
-        try {
-            session.invalidate();
-        } catch (IllegalStateException ignored) {
-            // session already invalidated
-        }
+
+    public SessionUser persistAuthentication(UserDto user,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) {
+        var sessionUser = new SessionUser(user.getUserId(), user.getUserName(), user.getDisplayName());
+        var authentication = UsernamePasswordAuthenticationToken.authenticated(
+                sessionUser,
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        var context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.getContextHolderStrategy().setContext(context);
+        securityContextRepository.saveContext(context, request, response);
+        return sessionUser;
     }
 }
-

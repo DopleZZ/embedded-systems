@@ -1,7 +1,17 @@
 package com.fitocube.backend.model;
 
-import jakarta.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Data;
@@ -21,11 +31,16 @@ public class UserDto {
 
     private String displayName;
 
+    @JsonIgnore
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
+
     @ElementCollection
     @CollectionTable(name = "user_friends", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "friend_id")
     private Set<Long> friends = new LinkedHashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "owner")
     Set<PlantStateDto> plants;
 }
