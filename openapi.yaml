@@ -58,7 +58,7 @@ paths:
               schema:
                 type: string
                 example: SESSION=abcd1234; HttpOnly; Path=/
-        '401':
+        '403':
           description: Неверный логин/пароль
   # Plant Management
   /plants/{plantId}:
