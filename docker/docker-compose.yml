@@ -1,6 +1,49 @@
 version: "3.8"
 
 services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: fitocube-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fitocube
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fitocube_net
+
+  backend:
+    build:
+      context: ../backend
+    container_name: fitocube-backend
+    restart: unless-stopped
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/fitocube
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      MQTT_BROKER_URI: tcp://mosquitto:1883
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - mosquitto
+    networks:
+      - fitocube_net
+
+  frontend:
+    build:
+      context: ../frontend
+    container_name: fitocube-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - fitocube_net
+
   mosquitto:
     image: eclipse-mosquitto:2.0
     container_name: fitocube-mosquitto
@@ -17,3 +60,6 @@ services:
 networks:
   fitocube_net:
     driver: bridge
+
+volumes:
+  postgres_data:

@@ -17,7 +17,7 @@ tags:
   - name: games
     description: Игры
 servers:
-  - url: http://localhost:8080/v1
+  - url: http://localhost:8080
     description: Local development
 # Authentication & Users
 paths:
@@ -408,6 +408,9 @@ components:
         displayName:
           type: string
           description: Дополнительное имя для отображения
+        passwordHash:
+          type: string
+          description: Пароль пользователя
         friends:
           type: array
           description: Список идентификаторов друзей пользователя
