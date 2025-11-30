@@ -2,12 +2,14 @@ package com.fitocube.backend.web;
 
 import com.fitocube.backend.model.PlantStateDto;
 import com.fitocube.backend.model.request.ClaimRequest;
+import com.fitocube.backend.model.session.SessionUser;
 import com.fitocube.backend.services.PlantService;
 import com.fitocube.backend.services.SessionService;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +33,8 @@ public class PlantsController {
     }
 
     @GetMapping("/{plantId}")
-    public ResponseEntity<PlantStateDto> getPlantById(@PathVariable @NonNull Long plantId) {
-        return plantService.getPlantById(plantId)
+    public ResponseEntity<PlantStateDto> getPlantById(@PathVariable @NonNull Long plantId, @AuthenticationPrincipal SessionUser user) {
+        return plantService.getPlantById(plantId, user)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -41,7 +43,8 @@ public class PlantsController {
     public ResponseEntity<Set<PlantStateDto>> getAllPlantsByOwner(
             @RequestParam(value = "ownerName", required = false) String requestedOwner) {
         var sessionUser = sessionService.requireSessionUser();
-        sessionService.ensureSameUser(requestedOwner, sessionUser);
+        System.out.println(sessionUser);
+        //sessionService.ensureSameUser(requestedOwner, sessionUser);
 
         var set = plantService.getAllPlantsByOwner(sessionUser.userName());
         return set.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(set);

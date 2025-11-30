@@ -4,9 +4,12 @@ package com.fitocube.backend.services;
 import com.fitocube.backend.model.PlantStateDto;
 import com.fitocube.backend.model.UserDto;
 import com.fitocube.backend.model.request.ClaimRequest;
+import com.fitocube.backend.model.session.SessionUser;
 import com.fitocube.backend.repositories.PlantStateRepository;
+import com.fitocube.backend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.lang.NonNull;
@@ -19,9 +22,11 @@ import java.util.Set;
 public class PlantService {
 
     private final PlantStateRepository plantStateRepository;
+    private final UserRepository userRepository;
 
-    public PlantService(PlantStateRepository plantStateRepository) {
+    public PlantService(PlantStateRepository plantStateRepository, SessionService sessionService, UserRepository userRepository) {
         this.plantStateRepository = plantStateRepository;
+        this.userRepository = userRepository;
     }
 
     public void savePlant(PlantStateDto dto){
@@ -32,8 +37,11 @@ public class PlantService {
                 });
     }
 
-    public Optional<PlantStateDto> getPlantById(@NonNull Long id){
-        return plantStateRepository.findById(id);
+    public Optional<PlantStateDto> getPlantById(@NonNull Long id, @AuthenticationPrincipal SessionUser user){
+
+        return plantStateRepository.findById(id)
+                .filter(plant -> plant.getOwner().getUserName().equals(user.userName()));
+
 
     }
 

@@ -77,12 +77,6 @@ public class SessionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
     }
 
-    public void ensureSameUser(String requestedUserName, SessionUser sessionUser) {
-        if (StringUtils.hasText(requestedUserName)
-                && !sessionUser.userName().equalsIgnoreCase(requestedUserName)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot access requested resource");
-        }
-    }
 
 
     public SessionUser persistAuthentication(UserDto user,
