@@ -5,23 +5,169 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11c03b44-32a9-4312-b9ab-9b74d0e9d390" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/model/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/model/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/model/request/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/model/request/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/fitocube/backend/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/fitocube/backend/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/fitocube/backend/security/SessionUserDetails.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/fitocube/backend/security/UsernameOnlyAuthenticationProvider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/fitocube/backend/services/SessionService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/fitocube/backend/services/SessionService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/fitocube/backend/web/PlantsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/fitocube/backend/web/PlantsController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/WebConfig.class.uniqueId0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/security/SessionUserDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/security/UsernameOnlyAuthenticationProvider.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/services/SessionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/services/SessionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/web/PlantsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/web/PlantsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fitocube/backend/web/SessionController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docker/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../openapi.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.cmake/api/v1/reply/cache-v2-bb0d9096f744399cf72a.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.cmake/api/v1/reply/cmakeFiles-v1-837554ad0b967f0ad71f.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.cmake/api/v1/reply/codemodel-v2-611bcbc971891bf3579a.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.cmake/api/v1/reply/index-2025-10-18T17-43-13-0127.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.cmake/api/v1/reply/target-__idf_esp_app_format-Debug-b476a59fc4791f22499e.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.cmake/api/v1/reply/target-bootloader-Debug-8e941438c79bef5a5486.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CMakeASMCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CompilerIdC/a.out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/3.29.6/CompilerIdCXX/a.out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/CMakeConfigureLog.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/bootloader-complete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/clion-Debug-ESP-IDF-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/clion-Debug-ESP-IDF-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/clion-environment.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/fitocube.elf.dir/project_elf_src_esp32.c.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/git-data/head-ref" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/git-data/head-ref" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/rules.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/CMakeFiles/rules.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/bootloader-prefix/tmp/bootloader-mkdirs.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/bootloader-prefix/tmp/bootloader-mkdirs.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/compile_commands.json" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/compile_commands.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/app_trace/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/app_trace/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/app_update/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/app_update/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/bootloader/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/bootloader/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/bootloader_support/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/bootloader_support/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/bt/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/bt/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/cmock/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/cmock/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/console/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/console/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/cxx/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/cxx/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/driver/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/driver/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/efuse/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/efuse/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp-tls/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp-tls/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_adc/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_adc/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_app_format/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_app_format/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_bootloader_format/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_bootloader_format/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_coex/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_coex/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_common/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_common/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_ana_cmpr/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_ana_cmpr/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_bitscrambler/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_bitscrambler/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_cam/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_cam/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_dac/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_dac/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_gpio/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_gpio/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_gptimer/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_gptimer/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_i2c/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_i2c/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_i2s/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_i2s/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_isp/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_isp/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_jpeg/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_jpeg/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_ledc/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_ledc/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_mcpwm/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_mcpwm/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_parlio/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_parlio/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_pcnt/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_pcnt/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_ppa/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_ppa/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_rmt/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_rmt/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_sdio/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_sdio/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_sdm/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_sdm/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_sdmmc/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_sdmmc/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_sdspi/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_sdspi/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_spi/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_spi/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_touch_sens/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_touch_sens/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_tsens/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_tsens/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_twai/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_twai/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_uart/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_uart/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_usb_serial_jtag/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_driver_usb_serial_jtag/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_eth/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_eth/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_event/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_event/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_gdbstub/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_gdbstub/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_hid/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_hid/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_http_client/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_http_client/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_http_server/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_http_server/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_https_ota/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_https_ota/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_https_server/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_https_server/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_hw_support/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_hw_support/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_hw_support/lowpower/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_hw_support/lowpower/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_hw_support/port/esp32/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_hw_support/port/esp32/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_lcd/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_lcd/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_local_ctrl/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_local_ctrl/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_mm/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_mm/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_netif/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_netif/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_netif_stack/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_netif_stack/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_partition/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_partition/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_phy/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_phy/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_pm/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_pm/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_psram/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_psram/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_ringbuf/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_ringbuf/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_rom/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_rom/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_security/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_security/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_system/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_system/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_system/port/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_system/port/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_system/port/soc/esp32/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_system/port/soc/esp32/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_timer/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_timer/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_vfs_console/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_vfs_console/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_wifi/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esp_wifi/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/espcoredump/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/espcoredump/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esptool_py/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/esptool_py/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/fatfs/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/fatfs/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/freertos/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/freertos/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/hal/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/hal/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/heap/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/heap/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/http_parser/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/http_parser/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/idf_test/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/idf_test/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/ieee802154/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/ieee802154/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/json/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/json/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/log/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/log/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/lwip/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/lwip/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/main/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/main/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/3rdparty/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/3rdparty/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/3rdparty/everest/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/3rdparty/everest/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/3rdparty/p256-m/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/3rdparty/p256-m/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/include/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/include/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/library/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/library/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/pkgconfig/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mbedtls/mbedtls/pkgconfig/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mqtt/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/mqtt/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/newlib/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/newlib/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/newlib/src/port/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/newlib/src/port/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/nvs_flash/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/nvs_flash/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/nvs_sec_provider/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/nvs_sec_provider/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/openthread/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/openthread/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/partition_table/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/partition_table/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/perfmon/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/perfmon/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/protobuf-c/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/protobuf-c/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/protocomm/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/protocomm/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/pthread/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/pthread/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/rt/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/rt/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/sdmmc/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/sdmmc/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/soc/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/soc/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/spi_flash/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/spi_flash/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/spiffs/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/spiffs/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/tcp_transport/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/tcp_transport/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/ulp/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/ulp/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/unity/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/unity/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/usb/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/usb/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/vfs/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/vfs/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/wear_levelling/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/wear_levelling/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/wifi_provisioning/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/wifi_provisioning/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/wpa_supplicant/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/wpa_supplicant/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/xtensa/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/esp-idf/xtensa/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/project_description.json" beforeDir="false" afterPath="$PROJECT_DIR$/../fitocube-low/cmake-build-debug-esp-idf/project_description.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,39 +219,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Gradle.Build backend.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BackendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/montana/MyLabs/embedded-systems/backend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15136719&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Gradle.Build backend.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.BackendApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/montana/MyLabs/embedded-systems/backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15136719",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java" />
