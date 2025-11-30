@@ -7,6 +7,7 @@ import com.fitocube.backend.services.SessionService;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class PlantsController {
     }
 
     @GetMapping("/{plantId}")
-    public ResponseEntity<PlantStateDto> getPlantById(@PathVariable Long plantId) {
+    public ResponseEntity<PlantStateDto> getPlantById(@PathVariable @NonNull Long plantId) {
         return plantService.getPlantById(plantId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
