@@ -1,17 +1,14 @@
-FROM gradle:8.7-jdk17-alpine AS builder
+FROM gradle:8.7-jdk17 AS builder
 
 WORKDIR /workspace
 
-COPY build.gradle settings.gradle gradlew ./
-COPY gradle gradle
-COPY src src
+COPY . .
 
-RUN chmod +x gradlew
-RUN ./gradlew bootJar --no-daemon \
+RUN gradle --no-daemon bootJar \
     && JAR_FILE=$(ls build/libs | grep -v plain | head -n 1) \
     && mv build/libs/$JAR_FILE app.jar
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 

@@ -13,6 +13,7 @@ services:
       - ./mosquitto/log:/mosquitto/log
     networks:
       - fitocube_net
+
   db:
     image: postgres:15
     container_name: db-embedded
@@ -21,7 +22,7 @@ services:
       - POSTGRES_USER=embedded
       - POSTGRES_PASSWORD=embedded
     ports:
-      - 5555:5432
+      - "5555:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
@@ -30,6 +31,35 @@ services:
       timeout: 1s
       retries: 10
     restart: unless-stopped
+    networks:
+      - fitocube_net
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/embedded
+      DB_USERNAME: embedded
+      DB_PASSWORD: embedded
+    depends_on:
+      - db
+      - mosquitto
+    ports:
+      - "8080:8080"
+    networks:
+      - fitocube_net
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - fitocube_net
 
 networks:
   fitocube_net:
