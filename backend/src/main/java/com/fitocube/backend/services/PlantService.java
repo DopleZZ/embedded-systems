@@ -24,25 +24,57 @@ public class PlantService {
     private final PlantStateRepository plantStateRepository;
     private final UserRepository userRepository;
 
-    public PlantService(PlantStateRepository plantStateRepository, SessionService sessionService, UserRepository userRepository) {
+    public PlantService(PlantStateRepository plantStateRepository,
+                        SessionService sessionService,
+                        UserRepository userRepository) {
         this.plantStateRepository = plantStateRepository;
         this.userRepository = userRepository;
     }
 
-    public void savePlant(PlantStateDto dto){
-        plantStateRepository.findByDeviceUid(dto.getDeviceUid())
-                .ifPresent(existing -> {
+    public Optional<PlantStateDto> savePlant(PlantStateDto dto){
+        return plantStateRepository.findByDeviceUid(dto.getDeviceUid())
+                .map(existing -> {
                     existing.setMeasurements(dto.getMeasurements());
-                    plantStateRepository.save(existing);
+                    if (dto.getMood() != null) {
+                        existing.setMood(dto.getMood());
+                    }
+                    if (dto.getFriendVisible() != null) {
+                        existing.setFriendVisible(dto.getFriendVisible());
+                    }
+                    return plantStateRepository.save(existing);
                 });
     }
 
     public Optional<PlantStateDto> getPlantById(@NonNull Long id, @AuthenticationPrincipal SessionUser user){
 
         return plantStateRepository.findById(id)
-                .filter(plant -> plant.getOwner().getUserName().equals(user.userName()));
+                .filter(plant -> plant.getOwner() != null && plant.getOwner().getUserName().equals(user.userName()));
 
 
+    }
+
+    @Transactional
+    public Optional<PlantStateDto> updateAutoWatering(@NonNull Long plantId,
+                                                      @NonNull SessionUser user,
+                                                      boolean enabled,
+                                                      Integer thresholdPercent,
+                                                      Integer durationSeconds,
+                                                      Integer cooldownSeconds) {
+        return plantStateRepository.findById(plantId)
+                .filter(plant -> plant.getOwner() != null && plant.getOwner().getUserName().equals(user.userName()))
+                .map(plant -> {
+                    plant.setAutoWateringEnabled(enabled);
+                    if (thresholdPercent != null) {
+                        plant.setAutoWateringThresholdPercent(thresholdPercent);
+                    }
+                    if (durationSeconds != null) {
+                        plant.setAutoWateringDurationSeconds(durationSeconds);
+                    }
+                    if (cooldownSeconds != null) {
+                        plant.setAutoWateringCooldownSeconds(cooldownSeconds);
+                    }
+                    return plantStateRepository.save(plant);
+                });
     }
 
     public Set<PlantStateDto> getAllPlantsByOwner(String username) {

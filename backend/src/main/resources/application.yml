@@ -16,7 +16,7 @@ spring:
     password: ${DB_PASSWORD:embedded}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     defer-datasource-initialization: true
     properties:
       hibernate:
@@ -25,5 +25,5 @@ spring:
     enabled: false
   sql:
     init:
-      mode: always
+      mode: never
       data-locations: classpath:data.sql

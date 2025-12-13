@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitocube.backend.config.MqttProperties;
 import com.fitocube.backend.model.PlantMeasurementsDto;
 import com.fitocube.backend.model.PlantStateDto;
+import com.fitocube.backend.services.AutoWateringService;
 import com.fitocube.backend.services.PlantService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +27,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MqttGateway implements MqttCallback {
 
+    private static final String CMD_WATER = "water";
+    private static final Instant MIN_ACCEPTABLE_MEASUREMENT_TS = Instant.parse("2020-01-01T00:00:00Z");
+
     private final MqttProperties properties;
     private final ObjectMapper objectMapper;
     private final PlantService plantService;
+    private final AutoWateringService autoWateringService;
 
     private MqttClient client;
 
@@ -78,18 +84,36 @@ public class MqttGateway implements MqttCallback {
     }
 
     public boolean requestFreshMeasurement() {
+        return publishCommand(properties.getCommandPayload());
+    }
+
+    /**
+     * Запросить включение помпы на заданное время.
+     * Формат payload: {@code water;<deviceUid>;<durationMs>}.
+     */
+    public boolean requestWatering(String deviceUid, int durationSeconds) {
+        if (deviceUid == null || deviceUid.isBlank()) {
+            return false;
+        }
+        if (durationSeconds <= 0) {
+            return false;
+        }
+        long durationMs = (long) durationSeconds * 1000L;
+        String payload = CMD_WATER + ";" + deviceUid.trim() + ";" + durationMs;
+        return publishCommand(payload);
+    }
+
+    private boolean publishCommand(String payload) {
         if (client == null || !client.isConnected()) {
             log.warn("MQTT клиент не подключен");
             return false;
         }
 
         try {
-            MqttMessage message = new MqttMessage(properties.getCommandPayload().getBytes(StandardCharsets.UTF_8));
+            MqttMessage message = new MqttMessage(payload.getBytes(StandardCharsets.UTF_8));
             message.setQos(1);
             client.publish(properties.getCommandTopic(), message);
-            log.info("Опубликована команда {} в {}",
-                     properties.getCommandPayload(),
-                     properties.getCommandTopic());
+            log.info("Опубликована команда {} в {}", payload, properties.getCommandTopic());
         }
         catch (Exception e) {
             log.error("Ошибка при отправке команды через MQTT", e);
@@ -116,9 +140,19 @@ public class MqttGateway implements MqttCallback {
                 log.warn("Получено сообщение без блока measurements, пропускаем: {}", message);
                 return;
             }
+            if (measurements.getTimestamp() == null || measurements.getTimestamp().isBefore(MIN_ACCEPTABLE_MEASUREMENT_TS)) {
+                measurements.setTimestamp(Instant.now());
+            }
 
             log.info(plantState.toString());
-            plantService.savePlant(plantState);
+            Instant now = Instant.now();
+            plantService.savePlant(plantState).ifPresent(saved -> {
+                autoWateringService.evaluate(saved, now).ifPresent(decision -> {
+                    if (requestWatering(saved.getDeviceUid(), decision.durationSeconds())) {
+                        autoWateringService.markWatered(saved.getPlantId(), now, decision);
+                    }
+                });
+            });
         }
         catch (Exception e) {
             log.error("Не удалось распарсить MQTT сообщение", e);

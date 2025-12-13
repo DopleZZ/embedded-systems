@@ -51,11 +51,11 @@ menu "Wi-Fi"
 
 config SOIL_SENSOR_WIFI_SSID
     string "SSID точки доступа"
-    default "iPhone (Evgeniy)"
+    default "RT-GPON-1A38"
 
 config SOIL_SENSOR_WIFI_PASSWORD
     string "Пароль Wi-Fi"
-    default "mep228330"
+    default "F37ab5djig"
 
 endmenu
 
@@ -76,6 +76,39 @@ config SOIL_SENSOR_MQTT_DATA_TOPIC
 config SOIL_SENSOR_PUBLISH_INTERVAL_MS
     int "Интервал публикации (мс)"
     default 300000
+
+endmenu
+
+menu "Полив / помпа"
+
+config SOIL_SENSOR_PUMP_ENABLED
+    bool "Управлять помпой через L9110S"
+    default y
+
+config SOIL_SENSOR_PUMP_IN1
+    int "GPIO IN1 (L9110S)"
+    range 0 48
+    default 25
+
+config SOIL_SENSOR_PUMP_IN2
+    int "GPIO IN2 (L9110S)"
+    range 0 48
+    default 26
+
+config SOIL_SENSOR_PUMP_MAX_DURATION_MS
+    int "Максимальная длительность полива (мс)"
+    range 0 3600000
+    default 600000
+
+config SOIL_SENSOR_PUMP_PWM_FREQ_HZ
+    int "PWM частота для помпы (Гц)"
+    range 1 40000
+    default 20000
+
+config SOIL_SENSOR_PUMP_POWER_PERCENT
+    int "Мощность помпы (%)"
+    range 1 100
+    default 60
 
 endmenu
 
