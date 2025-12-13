@@ -71,6 +71,12 @@ static esp_mqtt_client_handle_t mqtt_client = nullptr;
 static bool mqtt_connected = false;
 static char device_uid[32];
 
+static void allow_immediate_publish(void)
+{
+    int64_t now_ms = esp_timer_get_time() / 1000;
+    last_publish_timestamp_ms = now_ms - CONFIG_SOIL_SENSOR_PUBLISH_INTERVAL_MS;
+}
+
 typedef struct
 {
     int raw;
@@ -197,15 +203,15 @@ static const char *derive_mood(const measurement_report_t *report)
     {
         if (soil_percent < 5.0f)
         {
-            return "dry";
+            return "DRY";
         }
         if (soil_percent < 25.0f)
         {
-            return "thirsty";
+            return "THIRSTY";
         }
         if (soil_percent > 70.0f)
         {
-            return "happy";
+            return "HAPPY";
         }
     }
 
@@ -214,15 +220,15 @@ static const char *derive_mood(const measurement_report_t *report)
     {
         if (temp < 15.0f)
         {
-            return "cold";
+            return "COLD";
         }
         if (temp > 30.0f)
         {
-            return "hot";
+            return "HOT";
         }
     }
 
-    return "normal";
+    return "NORMAL";
 }
 
 static void publish_measurement(const measurement_report_t *report)
@@ -312,7 +318,10 @@ static void wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t e
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED)
     {
-        ESP_LOGW(TAG, "Wi-Fi отключён, повторное подключение...");
+        wifi_event_sta_disconnected_t *disconnect = static_cast<wifi_event_sta_disconnected_t *>(event_data);
+        int reason = disconnect ? disconnect->reason : -1;
+        ESP_LOGW(TAG, "Wi-Fi отключён (reason=%d), повторное подключение...", reason);
+        xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_BIT);
         esp_wifi_connect();
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
@@ -347,16 +356,18 @@ static bool wifi_start(void)
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
+    static esp_event_handler_instance_t wifi_event_instance_any_id;
+    static esp_event_handler_instance_t ip_event_instance_got_ip;
     ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
                                                         ESP_EVENT_ANY_ID,
                                                         &wifi_event_handler,
                                                         nullptr,
-                                                        nullptr));
+                                                        &wifi_event_instance_any_id));
     ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT,
                                                         IP_EVENT_STA_GOT_IP,
                                                         &wifi_event_handler,
                                                         nullptr,
-                                                        nullptr));
+                                                        &ip_event_instance_got_ip));
 
     wifi_config_t wifi_config = {};
     snprintf((char *)wifi_config.sta.ssid, sizeof(wifi_config.sta.ssid), "%s", CONFIG_SOIL_SENSOR_WIFI_SSID);
@@ -429,6 +440,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         mqtt_connected = true;
         ESP_LOGI(TAG, "MQTT подключен");
         esp_mqtt_client_subscribe(event->client, CONFIG_SOIL_SENSOR_MQTT_CMD_TOPIC, 1);
+        allow_immediate_publish();
         break;
     case MQTT_EVENT_DISCONNECTED:
         mqtt_connected = false;
@@ -522,8 +534,8 @@ extern "C" void app_main(void)
     bool wifi_ok = wifi_start();
     if (wifi_ok)
     {
+        allow_immediate_publish();
         mqtt_start();
-        last_publish_timestamp_ms = esp_timer_get_time() / 1000;
     }
     else
     {

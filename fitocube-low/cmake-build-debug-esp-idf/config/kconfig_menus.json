@@ -5284,29 +5284,266 @@
     {
         "children": [
             {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": "<choice SOIL_SENSOR_ADC_CHANNEL>",
+                        "help": null,
+                        "id": "SOIL_SENSOR_ADC_CH0",
+                        "name": "SOIL_SENSOR_ADC_CH0",
+                        "range": null,
+                        "title": "ADC1_CH0 (GPIO36)",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice SOIL_SENSOR_ADC_CHANNEL>",
+                        "help": null,
+                        "id": "SOIL_SENSOR_ADC_CH1",
+                        "name": "SOIL_SENSOR_ADC_CH1",
+                        "range": null,
+                        "title": "ADC1_CH1 (GPIO37)",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice SOIL_SENSOR_ADC_CHANNEL>",
+                        "help": null,
+                        "id": "SOIL_SENSOR_ADC_CH2",
+                        "name": "SOIL_SENSOR_ADC_CH2",
+                        "range": null,
+                        "title": "ADC1_CH2 (GPIO38)",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice SOIL_SENSOR_ADC_CHANNEL>",
+                        "help": null,
+                        "id": "SOIL_SENSOR_ADC_CH3",
+                        "name": "SOIL_SENSOR_ADC_CH3",
+                        "range": null,
+                        "title": "ADC1_CH3 (GPIO39)",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice SOIL_SENSOR_ADC_CHANNEL>",
+                        "help": null,
+                        "id": "SOIL_SENSOR_ADC_CH4",
+                        "name": "SOIL_SENSOR_ADC_CH4",
+                        "range": null,
+                        "title": "ADC1_CH4 (GPIO32)",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice SOIL_SENSOR_ADC_CHANNEL>",
+                        "help": null,
+                        "id": "SOIL_SENSOR_ADC_CH5",
+                        "name": "SOIL_SENSOR_ADC_CH5",
+                        "range": null,
+                        "title": "ADC1_CH5 (GPIO33)",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice SOIL_SENSOR_ADC_CHANNEL>",
+                        "help": null,
+                        "id": "SOIL_SENSOR_ADC_CH6",
+                        "name": "SOIL_SENSOR_ADC_CH6",
+                        "range": null,
+                        "title": "ADC1_CH6 (GPIO34)",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice SOIL_SENSOR_ADC_CHANNEL>",
+                        "help": null,
+                        "id": "SOIL_SENSOR_ADC_CH7",
+                        "name": "SOIL_SENSOR_ADC_CH7",
+                        "range": null,
+                        "title": "ADC1_CH7 (GPIO35)",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": null,
+                "help": null,
+                "id": "soil-sensor-settings-soil-moisture-adc-channel",
+                "name": "SOIL_SENSOR_ADC_CHANNEL",
+                "title": "Soil moisture ADC channel",
+                "type": "choice"
+            },
+            {
                 "children": [],
                 "depends_on": null,
-                "help": "GPIO pin used for the LED.",
-                "id": "BLINK_GPIO",
-                "name": "BLINK_GPIO",
-                "range": null,
-                "title": "GPIO number",
+                "help": null,
+                "id": "SOIL_SENSOR_SAMPLE_PERIOD_MS",
+                "name": "SOIL_SENSOR_SAMPLE_PERIOD_MS",
+                "range": [
+                    100,
+                    3600000
+                ],
+                "title": "\u041f\u0435\u0440\u0438\u043e\u0434 \u043e\u043f\u0440\u043e\u0441\u0430 \u0434\u0430\u0442\u0447\u0438\u043a\u043e\u0432 (\u043c\u0441)",
                 "type": "int"
             },
             {
                 "children": [],
                 "depends_on": null,
-                "help": "Delay in milliseconds between toggles.",
-                "id": "BLINK_PERIOD_MS",
-                "name": "BLINK_PERIOD_MS",
+                "help": null,
+                "id": "SOIL_SENSOR_SOIL_DRY_RAW",
+                "name": "SOIL_SENSOR_SOIL_DRY_RAW",
                 "range": null,
-                "title": "Blink period (ms)",
+                "title": "\u0421\u044b\u0440\u043e\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 ADC \u0434\u043b\u044f \u0441\u0443\u0445\u043e\u0439 \u043f\u043e\u0447\u0432\u044b",
                 "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": null,
+                "help": null,
+                "id": "SOIL_SENSOR_SOIL_WET_RAW",
+                "name": "SOIL_SENSOR_SOIL_WET_RAW",
+                "range": null,
+                "title": "\u0421\u044b\u0440\u043e\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 ADC \u0434\u043b\u044f \u0432\u043b\u0430\u0436\u043d\u043e\u0439 \u043f\u043e\u0447\u0432\u044b",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": null,
+                "help": null,
+                "id": "SOIL_SENSOR_VREF_MV",
+                "name": "SOIL_SENSOR_VREF_MV",
+                "range": null,
+                "title": "\u041e\u043f\u043e\u0440\u043d\u043e\u0435 \u043d\u0430\u043f\u0440\u044f\u0436\u0435\u043d\u0438\u0435 ADC (mV)",
+                "type": "int"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_WIFI_SSID",
+                        "name": "SOIL_SENSOR_WIFI_SSID",
+                        "range": null,
+                        "title": "SSID \u0442\u043e\u0447\u043a\u0438 \u0434\u043e\u0441\u0442\u0443\u043f\u0430",
+                        "type": "string"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_WIFI_PASSWORD",
+                        "name": "SOIL_SENSOR_WIFI_PASSWORD",
+                        "range": null,
+                        "title": "\u041f\u0430\u0440\u043e\u043b\u044c Wi-Fi",
+                        "type": "string"
+                    }
+                ],
+                "depends_on": null,
+                "id": "soil-sensor-settings-wi-fi",
+                "title": "Wi-Fi",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_MQTT_BROKER_URI",
+                        "name": "SOIL_SENSOR_MQTT_BROKER_URI",
+                        "range": null,
+                        "title": "URI \u0431\u0440\u043e\u043a\u0435\u0440\u0430",
+                        "type": "string"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_MQTT_CMD_TOPIC",
+                        "name": "SOIL_SENSOR_MQTT_CMD_TOPIC",
+                        "range": null,
+                        "title": "\u0422\u043e\u043f\u0438\u043a \u0434\u043b\u044f \u043a\u043e\u043c\u0430\u043d\u0434",
+                        "type": "string"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_MQTT_DATA_TOPIC",
+                        "name": "SOIL_SENSOR_MQTT_DATA_TOPIC",
+                        "range": null,
+                        "title": "\u0422\u043e\u043f\u0438\u043a \u0434\u043b\u044f \u0442\u0435\u043b\u0435\u043c\u0435\u0442\u0440\u0438\u0438",
+                        "type": "string"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_PUBLISH_INTERVAL_MS",
+                        "name": "SOIL_SENSOR_PUBLISH_INTERVAL_MS",
+                        "range": null,
+                        "title": "\u0418\u043d\u0442\u0435\u0440\u0432\u0430\u043b \u043f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u0438 (\u043c\u0441)",
+                        "type": "int"
+                    }
+                ],
+                "depends_on": null,
+                "id": "soil-sensor-settings-mqtt",
+                "title": "MQTT",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_BME280_ENABLED",
+                        "name": "SOIL_SENSOR_BME280_ENABLED",
+                        "range": null,
+                        "title": "\u0418\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u044c \u0434\u0430\u0442\u0447\u0438\u043a BME280",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_BME280_SDA",
+                        "name": "SOIL_SENSOR_BME280_SDA",
+                        "range": null,
+                        "title": "GPIO SDA",
+                        "type": "int"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_BME280_SCL",
+                        "name": "SOIL_SENSOR_BME280_SCL",
+                        "range": null,
+                        "title": "GPIO SCL",
+                        "type": "int"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "SOIL_SENSOR_BME280_I2C_ADDRESS",
+                        "name": "SOIL_SENSOR_BME280_I2C_ADDRESS",
+                        "range": null,
+                        "title": "I2C \u0430\u0434\u0440\u0435\u0441",
+                        "type": "hex"
+                    }
+                ],
+                "depends_on": null,
+                "id": "soil-sensor-settings-\u0434\u0430\u0442\u0447\u0438\u043a-bme280",
+                "title": "\u0414\u0430\u0442\u0447\u0438\u043a BME280",
+                "type": "menu"
             }
         ],
         "depends_on": null,
-        "id": "blink-example-settings",
-        "title": "Blink example settings",
+        "id": "soil-sensor-settings",
+        "title": "Soil sensor settings",
         "type": "menu"
     },
     {

@@ -32,8 +32,8 @@ public class PlantService {
     public void savePlant(PlantStateDto dto){
         plantStateRepository.findByDeviceUid(dto.getDeviceUid())
                 .ifPresent(existing -> {
-                    dto.setPlantId(existing.getPlantId());
-                    plantStateRepository.save(dto);
+                    existing.setMeasurements(dto.getMeasurements());
+                    plantStateRepository.save(existing);
                 });
     }
 

@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "fitocube",
-    "project_version":    "71cc4e3-dirty",
+    "project_version":    "6a8ff83-dirty",
     "project_path":       "/Users/montana/MyLabs/embedded-systems/fitocube-low",
     "idf_path":           "/Users/montana/MyLabs/ESP-IDF/esp-idf-v5.5.1",
     "build_dir":          "/Users/montana/MyLabs/embedded-systems/fitocube-low/cmake-build-debug-esp-idf",
@@ -1225,7 +1225,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/Users/montana/MyLabs/embedded-systems/fitocube-low/cmake-build-debug-esp-idf/esp-idf/main/libmain.a",
-            "sources": [ "/Users/montana/MyLabs/embedded-systems/fitocube-low/main/main.c" ],
+            "sources": [ "/Users/montana/MyLabs/embedded-systems/fitocube-low/main/main.cpp", "/Users/montana/MyLabs/embedded-systems/fitocube-low/main/bme280_support.c" ],
             "include_dirs": [ "." ]
         },
         "mbedtls": {
