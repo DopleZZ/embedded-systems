@@ -30,7 +30,7 @@ export const authApi = {
     const response = await api.post('/auth/register', {
       userName,
       password,
-      displayName,
+      ...(displayName && { displayName }),
     })
     return response.data
   },
@@ -42,6 +42,46 @@ export const authApi = {
       password,
     })
     return response.data
+  },
+}
+
+export const friendsApi = {
+  // Получить список друзей
+  getFriends: async (userId) => {
+    const response = await api.get(`/friends?userId=${userId}`)
+    return response.data
+  },
+
+  // Отправить запрос в друзья
+  sendFriendRequest: async (requesterId, targetName) => {
+    const response = await api.post('/friends/request', {
+      requesterId,
+      targetName,
+    })
+    return response.data
+  },
+
+  // Получить входящие запросы
+  getIncomingRequests: async () => {
+    const response = await api.get('/friends/request/incoming')
+    return response.data
+  },
+
+  // Получить исходящие запросы
+  getOutgoingRequests: async () => {
+    const response = await api.get('/friends/request/outgoing')
+    return response.data
+  },
+
+  // Принять запрос в друзья
+  acceptFriendRequest: async (requestId) => {
+    const response = await api.post(`/friends/request/${requestId}/accept`)
+    return response.data
+  },
+
+  // Отклонить запрос в друзья
+  rejectFriendRequest: async (requestId) => {
+    await api.post(`/friends/request/${requestId}/reject`)
   },
 }
 

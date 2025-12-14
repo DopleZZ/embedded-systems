@@ -1,10 +1,13 @@
 package com.fitocube.backend.web;
 
 import com.fitocube.backend.model.PlantStateDto;
+import com.fitocube.backend.model.request.AutoWateringRequest;
 import com.fitocube.backend.model.request.ClaimRequest;
+import com.fitocube.backend.model.request.WateringRequest;
 import com.fitocube.backend.model.session.SessionUser;
 import com.fitocube.backend.services.PlantService;
 import com.fitocube.backend.services.SessionService;
+import com.fitocube.backend.services.WateringService;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +29,12 @@ public class PlantsController {
 
     private final PlantService plantService;
     private final SessionService sessionService;
+    private final WateringService wateringService;
 
-    public PlantsController(PlantService plantService, SessionService sessionService) {
+    public PlantsController(PlantService plantService, SessionService sessionService, WateringService wateringService) {
         this.plantService = plantService;
         this.sessionService = sessionService;
+        this.wateringService = wateringService;
     }
 
     @GetMapping("/{plantId}")
@@ -47,7 +52,12 @@ public class PlantsController {
         //sessionService.ensureSameUser(requestedOwner, sessionUser);
 
         var set = plantService.getAllPlantsByOwner(sessionUser.userName());
-        return set.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(set);
+        return ResponseEntity.ok(set);
+    }
+
+    @GetMapping("/by-friend-name")
+    public ResponseEntity<Set<PlantStateDto>> listPlantsByFriendName(@RequestParam("friendName") String friendName) {
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Not implemented yet");
     }
 
     @PostMapping("/claim")
@@ -57,7 +67,57 @@ public class PlantsController {
         }
         var owner = sessionService.requireSessionUserEntity();
         return plantService.claimPlant(owner, claimRequest)
+                .map(plant -> ResponseEntity.status(HttpStatus.CREATED).body(plant))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "device already claimed"));
+    }
+
+    @PostMapping("/watering")
+    public ResponseEntity<Void> triggerWatering(@RequestParam("plantId") @NonNull Long plantId,
+                                                @RequestBody(required = false) WateringRequest request,
+                                                @AuthenticationPrincipal SessionUser user) {
+        int durationSeconds = request != null && request.getDurationSeconds() != null
+                ? request.getDurationSeconds()
+                : 5;
+
+        if (durationSeconds < 1 || durationSeconds > 600) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "durationSeconds must be between 1 and 600");
+        }
+
+        var result = wateringService.triggerWatering(plantId, user, durationSeconds);
+        if (result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        if (Boolean.TRUE.equals(result.get())) {
+            return ResponseEntity.accepted().build();
+        }
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+    }
+
+    @PostMapping("/{plantId}/auto-watering")
+    public ResponseEntity<PlantStateDto> updateAutoWatering(@PathVariable @NonNull Long plantId,
+                                                            @RequestBody AutoWateringRequest request,
+                                                            @AuthenticationPrincipal SessionUser user) {
+        if (request == null || request.getEnabled() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "enabled is required");
+        }
+        if (request.getThresholdPercent() != null && (request.getThresholdPercent() < 0 || request.getThresholdPercent() > 100)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "thresholdPercent must be between 0 and 100");
+        }
+        if (request.getDurationSeconds() != null && (request.getDurationSeconds() < 1 || request.getDurationSeconds() > 600)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "durationSeconds must be between 1 and 600");
+        }
+        if (request.getCooldownSeconds() != null && (request.getCooldownSeconds() < 0 || request.getCooldownSeconds() > 86400)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cooldownSeconds must be between 0 and 86400");
+        }
+
+        return plantService.updateAutoWatering(
+                        plantId,
+                        user,
+                        request.getEnabled(),
+                        request.getThresholdPercent(),
+                        request.getDurationSeconds(),
+                        request.getCooldownSeconds())
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

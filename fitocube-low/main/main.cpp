@@ -1,5 +1,7 @@
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <time.h>
 
@@ -7,7 +9,9 @@
 #include "freertos/event_groups.h"
 #include "freertos/task.h"
 #include "driver/adc.h"
+#include "driver/gpio.h"
 #include "driver/i2c.h"
+#include "driver/ledc.h"
 #include "esp_adc_cal.h"
 #include "esp_check.h"
 #include "esp_err.h"
@@ -23,6 +27,14 @@
 #include "bme280_support.h"
 
 static const char *TAG = "soil_sensor";
+
+#ifndef CONFIG_SOIL_SENSOR_PUMP_PWM_FREQ_HZ
+#define CONFIG_SOIL_SENSOR_PUMP_PWM_FREQ_HZ 20000
+#endif
+
+#ifndef CONFIG_SOIL_SENSOR_PUMP_POWER_PERCENT
+#define CONFIG_SOIL_SENSOR_PUMP_POWER_PERCENT 60
+#endif
 
 #if CONFIG_SOIL_SENSOR_ADC_CH0
 #define SOIL_SENSOR_ADC_CHANNEL ADC1_CHANNEL_0  // GPIO36
@@ -70,6 +82,221 @@ static esp_adc_cal_characteristics_t adc_chars;
 static esp_mqtt_client_handle_t mqtt_client = nullptr;
 static bool mqtt_connected = false;
 static char device_uid[32];
+
+#if CONFIG_SOIL_SENSOR_PUMP_ENABLED
+static const char *kCmdWater = "water";
+static const char *kCmdWaterStop = "water_stop";
+static bool pump_running = false;
+static int64_t pump_stop_at_ms = 0;
+static portMUX_TYPE pump_mux = portMUX_INITIALIZER_UNLOCKED;
+static bool pump_pwm_ready = false;
+static uint32_t pump_on_duty = 0;
+static uint32_t pump_target_duty = 0;
+static int64_t pump_boost_until_ms = 0;
+
+static const ledc_mode_t kPumpPwmMode = LEDC_LOW_SPEED_MODE;
+static const ledc_timer_t kPumpPwmTimer = LEDC_TIMER_0;
+static const ledc_channel_t kPumpPwmChannel = LEDC_CHANNEL_0;
+static const ledc_timer_bit_t kPumpPwmResolution = LEDC_TIMER_10_BIT;
+
+static void pump_early_safe_state(void)
+{
+    gpio_reset_pin((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN1);
+    gpio_reset_pin((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN2);
+
+    gpio_set_direction((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN1, GPIO_MODE_OUTPUT);
+    gpio_set_direction((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN2, GPIO_MODE_OUTPUT);
+
+    gpio_set_level((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN1, 0);
+    gpio_set_level((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN2, 0);
+
+    gpio_pulldown_en((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN1);
+    gpio_pulldown_en((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN2);
+    gpio_pullup_dis((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN1);
+    gpio_pullup_dis((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN2);
+}
+
+static void pump_set_off(void)
+{
+    if (pump_pwm_ready)
+    {
+        ledc_set_duty(kPumpPwmMode, kPumpPwmChannel, 0);
+        ledc_update_duty(kPumpPwmMode, kPumpPwmChannel);
+    }
+    else
+    {
+        gpio_set_level((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN1, 0);
+    }
+    gpio_set_level((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN2, 0);
+}
+
+static void pump_stop(void)
+{
+    portENTER_CRITICAL(&pump_mux);
+    pump_running = false;
+    pump_stop_at_ms = 0;
+    pump_boost_until_ms = 0;
+    portEXIT_CRITICAL(&pump_mux);
+    pump_set_off();
+    ESP_LOGI(TAG, "Помпа выключена");
+}
+
+static void pump_start(uint32_t duration_ms)
+{
+    if (duration_ms == 0)
+    {
+        pump_stop();
+        return;
+    }
+
+    uint32_t max_ms = (uint32_t)CONFIG_SOIL_SENSOR_PUMP_MAX_DURATION_MS;
+    if (max_ms > 0 && duration_ms > max_ms)
+    {
+        duration_ms = max_ms;
+    }
+
+    if (pump_pwm_ready)
+    {
+        gpio_set_level((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN2, 0);
+        uint32_t max_duty = (1U << (uint32_t)kPumpPwmResolution) - 1U;
+        ledc_set_duty(kPumpPwmMode, kPumpPwmChannel, max_duty);
+        ledc_update_duty(kPumpPwmMode, kPumpPwmChannel);
+    }
+    else
+    {
+        gpio_set_level((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN1, 1);
+        gpio_set_level((gpio_num_t)CONFIG_SOIL_SENSOR_PUMP_IN2, 0);
+    }
+
+    int64_t now_ms = esp_timer_get_time() / 1000;
+    portENTER_CRITICAL(&pump_mux);
+    pump_running = true;
+    pump_stop_at_ms = now_ms + (int64_t)duration_ms;
+    if (pump_pwm_ready)
+    {
+        pump_target_duty = pump_on_duty;
+        pump_boost_until_ms = now_ms + 200;  // небольшой "пинок" для старта мотора
+    }
+    portEXIT_CRITICAL(&pump_mux);
+    ESP_LOGI(TAG, "Помпа включена на %u ms", (unsigned)duration_ms);
+}
+
+static void pump_task(void *param)
+{
+    (void)param;
+    const TickType_t delay = pdMS_TO_TICKS(50);
+
+    while (true)
+    {
+        bool should_stop = false;
+        bool should_drop_boost = false;
+        int64_t now_ms = esp_timer_get_time() / 1000;
+
+        portENTER_CRITICAL(&pump_mux);
+        if (pump_running && pump_stop_at_ms > 0 && now_ms >= pump_stop_at_ms)
+        {
+            should_stop = true;
+        }
+        if (pump_running && pump_pwm_ready && pump_boost_until_ms > 0 && now_ms >= pump_boost_until_ms)
+        {
+            should_drop_boost = true;
+            pump_boost_until_ms = 0;
+        }
+        portEXIT_CRITICAL(&pump_mux);
+
+        if (should_stop)
+        {
+            pump_stop();
+        }
+        else if (should_drop_boost)
+        {
+            ledc_set_duty(kPumpPwmMode, kPumpPwmChannel, pump_target_duty);
+            ledc_update_duty(kPumpPwmMode, kPumpPwmChannel);
+        }
+
+        vTaskDelay(delay);
+    }
+}
+
+static void pump_init(void)
+{
+    gpio_config_t conf = {};
+    conf.mode = GPIO_MODE_OUTPUT;
+    conf.pin_bit_mask = (1ULL << CONFIG_SOIL_SENSOR_PUMP_IN1) | (1ULL << CONFIG_SOIL_SENSOR_PUMP_IN2);
+    conf.intr_type = GPIO_INTR_DISABLE;
+    conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    conf.pull_up_en = GPIO_PULLUP_DISABLE;
+
+    esp_err_t err = gpio_config(&conf);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Не удалось настроить GPIO для помпы (%s)", esp_err_to_name(err));
+        return;
+    }
+
+    pump_set_off();
+
+    ledc_timer_config_t timer_cfg = {};
+    timer_cfg.speed_mode = kPumpPwmMode;
+    timer_cfg.timer_num = kPumpPwmTimer;
+    timer_cfg.duty_resolution = kPumpPwmResolution;
+    timer_cfg.freq_hz = CONFIG_SOIL_SENSOR_PUMP_PWM_FREQ_HZ;
+    timer_cfg.clk_cfg = LEDC_AUTO_CLK;
+
+    esp_err_t ledc_err = ledc_timer_config(&timer_cfg);
+    if (ledc_err != ESP_OK)
+    {
+        ESP_LOGW(TAG, "PWM для помпы недоступен (%s), используем on/off", esp_err_to_name(ledc_err));
+        pump_pwm_ready = false;
+    }
+    else
+    {
+        ledc_channel_config_t channel_cfg = {};
+        channel_cfg.speed_mode = kPumpPwmMode;
+        channel_cfg.channel = kPumpPwmChannel;
+        channel_cfg.timer_sel = kPumpPwmTimer;
+        channel_cfg.intr_type = LEDC_INTR_DISABLE;
+        channel_cfg.gpio_num = CONFIG_SOIL_SENSOR_PUMP_IN1;
+        channel_cfg.duty = 0;
+        channel_cfg.hpoint = 0;
+
+        ledc_err = ledc_channel_config(&channel_cfg);
+        if (ledc_err != ESP_OK)
+        {
+            ESP_LOGW(TAG, "PWM канал для помпы недоступен (%s), используем on/off", esp_err_to_name(ledc_err));
+            pump_pwm_ready = false;
+        }
+        else
+        {
+            pump_pwm_ready = true;
+        }
+    }
+
+    uint32_t max_duty = (1U << (uint32_t)kPumpPwmResolution) - 1U;
+    uint32_t pct = (uint32_t)CONFIG_SOIL_SENSOR_PUMP_POWER_PERCENT;
+    if (pct < 1U)
+    {
+        pct = 1U;
+    }
+    if (pct > 100U)
+    {
+        pct = 100U;
+    }
+    pump_on_duty = (max_duty * pct) / 100U;
+    if (pump_on_duty == 0U)
+    {
+        pump_on_duty = 1U;
+    }
+
+    xTaskCreate(pump_task, "pump_task", 2048, nullptr, tskIDLE_PRIORITY + 1, nullptr);
+}
+#endif
+
+static void allow_immediate_publish(void)
+{
+    int64_t now_ms = esp_timer_get_time() / 1000;
+    last_publish_timestamp_ms = now_ms - CONFIG_SOIL_SENSOR_PUBLISH_INTERVAL_MS;
+}
 
 typedef struct
 {
@@ -197,15 +424,15 @@ static const char *derive_mood(const measurement_report_t *report)
     {
         if (soil_percent < 5.0f)
         {
-            return "dry";
+            return "DRY";
         }
         if (soil_percent < 25.0f)
         {
-            return "thirsty";
+            return "THIRSTY";
         }
         if (soil_percent > 70.0f)
         {
-            return "happy";
+            return "HAPPY";
         }
     }
 
@@ -214,15 +441,15 @@ static const char *derive_mood(const measurement_report_t *report)
     {
         if (temp < 15.0f)
         {
-            return "cold";
+            return "COLD";
         }
         if (temp > 30.0f)
         {
-            return "hot";
+            return "HOT";
         }
     }
 
-    return "normal";
+    return "NORMAL";
 }
 
 static void publish_measurement(const measurement_report_t *report)
@@ -312,7 +539,10 @@ static void wifi_event_handler(void *arg, esp_event_base_t event_base, int32_t e
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED)
     {
-        ESP_LOGW(TAG, "Wi-Fi отключён, повторное подключение...");
+        wifi_event_sta_disconnected_t *disconnect = static_cast<wifi_event_sta_disconnected_t *>(event_data);
+        int reason = disconnect ? disconnect->reason : -1;
+        ESP_LOGW(TAG, "Wi-Fi отключён (reason=%d), повторное подключение...", reason);
+        xEventGroupClearBits(wifi_event_group, WIFI_CONNECTED_BIT);
         esp_wifi_connect();
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
@@ -347,16 +577,18 @@ static bool wifi_start(void)
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
+    static esp_event_handler_instance_t wifi_event_instance_any_id;
+    static esp_event_handler_instance_t ip_event_instance_got_ip;
     ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
                                                         ESP_EVENT_ANY_ID,
                                                         &wifi_event_handler,
                                                         nullptr,
-                                                        nullptr));
+                                                        &wifi_event_instance_any_id));
     ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT,
                                                         IP_EVENT_STA_GOT_IP,
                                                         &wifi_event_handler,
                                                         nullptr,
-                                                        nullptr));
+                                                        &ip_event_instance_got_ip));
 
     wifi_config_t wifi_config = {};
     snprintf((char *)wifi_config.sta.ssid, sizeof(wifi_config.sta.ssid), "%s", CONFIG_SOIL_SENSOR_WIFI_SSID);
@@ -414,6 +646,74 @@ static void mqtt_handle_command(const esp_mqtt_event_handle_t event)
         publish_measurement(&report);
         last_publish_timestamp_ms = report.timestamp_ms;
     }
+
+#if CONFIG_SOIL_SENSOR_PUMP_ENABLED
+    if (event->data_len <= 0)
+    {
+        return;
+    }
+
+    char cmd_buf[160];
+    if (event->data_len >= (int)sizeof(cmd_buf))
+    {
+        ESP_LOGW(TAG, "Слишком длинная команда MQTT, пропускаем (len=%d)", event->data_len);
+        return;
+    }
+
+    memcpy(cmd_buf, event->data, event->data_len);
+    cmd_buf[event->data_len] = '\0';
+
+    if (strncmp(cmd_buf, kCmdWaterStop, strlen(kCmdWaterStop)) == 0 &&
+        cmd_buf[strlen(kCmdWaterStop)] == ';')
+    {
+        const char *uid = cmd_buf + strlen(kCmdWaterStop) + 1;
+        if (strcmp(uid, device_uid) == 0)
+        {
+            pump_stop();
+        }
+        return;
+    }
+
+    if (strncmp(cmd_buf, kCmdWater, strlen(kCmdWater)) == 0 &&
+        cmd_buf[strlen(kCmdWater)] == ';')
+    {
+        const char *uid_start = cmd_buf + strlen(kCmdWater) + 1;
+        const char *sep = strchr(uid_start, ';');
+        if (!sep)
+        {
+            return;
+        }
+
+        size_t uid_len = (size_t)(sep - uid_start);
+        if (uid_len == 0 || uid_len >= sizeof(device_uid))
+        {
+            return;
+        }
+
+        char uid[sizeof(device_uid)];
+        memcpy(uid, uid_start, uid_len);
+        uid[uid_len] = '\0';
+        if (strcmp(uid, device_uid) != 0)
+        {
+            return;
+        }
+
+        const char *duration_str = sep + 1;
+        char *endptr = nullptr;
+        unsigned long long duration_ms = strtoull(duration_str, &endptr, 10);
+        if (endptr == duration_str || (endptr && *endptr != '\0'))
+        {
+            return;
+        }
+        if (duration_ms > UINT32_MAX)
+        {
+            duration_ms = UINT32_MAX;
+        }
+
+        pump_start((uint32_t)duration_ms);
+        return;
+    }
+#endif
 }
 
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
@@ -429,6 +729,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         mqtt_connected = true;
         ESP_LOGI(TAG, "MQTT подключен");
         esp_mqtt_client_subscribe(event->client, CONFIG_SOIL_SENSOR_MQTT_CMD_TOPIC, 1);
+        allow_immediate_publish();
         break;
     case MQTT_EVENT_DISCONNECTED:
         mqtt_connected = false;
@@ -496,6 +797,9 @@ static void mqtt_start(void)
 
 extern "C" void app_main(void)
 {
+#if CONFIG_SOIL_SENSOR_PUMP_ENABLED
+    pump_early_safe_state();
+#endif
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
     {
@@ -509,6 +813,9 @@ extern "C" void app_main(void)
 
     init_device_uid();
     init_adc();
+#if CONFIG_SOIL_SENSOR_PUMP_ENABLED
+    pump_init();
+#endif
 #if CONFIG_SOIL_SENSOR_BME280_ENABLED
     ESP_ERROR_CHECK_WITHOUT_ABORT(bme280_support_init(BME280_I2C_PORT,
                                                       CONFIG_SOIL_SENSOR_BME280_I2C_ADDRESS,
@@ -522,8 +829,8 @@ extern "C" void app_main(void)
     bool wifi_ok = wifi_start();
     if (wifi_ok)
     {
+        allow_immediate_publish();
         mqtt_start();
-        last_publish_timestamp_ms = esp_timer_get_time() / 1000;
     }
     else
     {

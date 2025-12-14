@@ -42,5 +42,19 @@ public class PlantStateDto {
     @Column(name = "friend_visible")
     private Boolean friendVisible;
 
-    }
+    @Column(name = "auto_watering_enabled")
+    private Boolean autoWateringEnabled;
 
+    @Column(name = "auto_watering_threshold_percent")
+    private Integer autoWateringThresholdPercent;
+
+    @Column(name = "auto_watering_duration_seconds")
+    private Integer autoWateringDurationSeconds;
+
+    @Column(name = "auto_watering_cooldown_seconds")
+    private Integer autoWateringCooldownSeconds;
+
+    @Column(name = "last_watering_at")
+    private Instant lastWateringAt;
+
+}

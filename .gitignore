@@ -1,0 +1,6 @@
+backend/.gradle
+backend/.idea
+backend/build
+backend/gradle/wrapper
+fitocube-low/cmake-build-debug-esp-idf
+.idea

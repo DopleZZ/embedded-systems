@@ -1,15 +1,135 @@
-menu "Blink example settings"
+menu "Soil sensor settings"
 
-config BLINK_GPIO
-    int "GPIO number"
-    default 2
-    help
-        GPIO pin used for the LED.
+choice SOIL_SENSOR_ADC_CHANNEL
+    prompt "Soil moisture ADC channel"
+    default SOIL_SENSOR_ADC_CH6
 
-config BLINK_PERIOD_MS
-    int "Blink period (ms)"
-    default 500
-    help
-        Delay in milliseconds between toggles.
+config SOIL_SENSOR_ADC_CH0
+    bool "ADC1_CH0 (GPIO36)"
+
+config SOIL_SENSOR_ADC_CH1
+    bool "ADC1_CH1 (GPIO37)"
+
+config SOIL_SENSOR_ADC_CH2
+    bool "ADC1_CH2 (GPIO38)"
+
+config SOIL_SENSOR_ADC_CH3
+    bool "ADC1_CH3 (GPIO39)"
+
+config SOIL_SENSOR_ADC_CH4
+    bool "ADC1_CH4 (GPIO32)"
+
+config SOIL_SENSOR_ADC_CH5
+    bool "ADC1_CH5 (GPIO33)"
+
+config SOIL_SENSOR_ADC_CH6
+    bool "ADC1_CH6 (GPIO34)"
+
+config SOIL_SENSOR_ADC_CH7
+    bool "ADC1_CH7 (GPIO35)"
+
+endchoice
+
+config SOIL_SENSOR_SAMPLE_PERIOD_MS
+    int "Период опроса датчиков (мс)"
+    range 100 3600000
+    default 1000
+
+config SOIL_SENSOR_SOIL_DRY_RAW
+    int "Сырое значение ADC для сухой почвы"
+    default 1200
+
+config SOIL_SENSOR_SOIL_WET_RAW
+    int "Сырое значение ADC для влажной почвы"
+    default 3200
+
+config SOIL_SENSOR_VREF_MV
+    int "Опорное напряжение ADC (mV)"
+    default 1100
+
+menu "Wi-Fi"
+
+config SOIL_SENSOR_WIFI_SSID
+    string "SSID точки доступа"
+    default "RT-GPON-1A38"
+
+config SOIL_SENSOR_WIFI_PASSWORD
+    string "Пароль Wi-Fi"
+    default "F37ab5djig"
+
+endmenu
+
+menu "MQTT"
+
+config SOIL_SENSOR_MQTT_BROKER_URI
+    string "URI брокера"
+    default "mqtt://azat222.ru:1883"
+
+config SOIL_SENSOR_MQTT_CMD_TOPIC
+    string "Топик для команд"
+    default "soil/cmd"
+
+config SOIL_SENSOR_MQTT_DATA_TOPIC
+    string "Топик для телеметрии"
+    default "soil/data"
+
+config SOIL_SENSOR_PUBLISH_INTERVAL_MS
+    int "Интервал публикации (мс)"
+    default 300000
+
+endmenu
+
+menu "Полив / помпа"
+
+config SOIL_SENSOR_PUMP_ENABLED
+    bool "Управлять помпой через L9110S"
+    default y
+
+config SOIL_SENSOR_PUMP_IN1
+    int "GPIO IN1 (L9110S)"
+    range 0 48
+    default 25
+
+config SOIL_SENSOR_PUMP_IN2
+    int "GPIO IN2 (L9110S)"
+    range 0 48
+    default 26
+
+config SOIL_SENSOR_PUMP_MAX_DURATION_MS
+    int "Максимальная длительность полива (мс)"
+    range 0 3600000
+    default 600000
+
+config SOIL_SENSOR_PUMP_PWM_FREQ_HZ
+    int "PWM частота для помпы (Гц)"
+    range 1 40000
+    default 20000
+
+config SOIL_SENSOR_PUMP_POWER_PERCENT
+    int "Мощность помпы (%)"
+    range 1 100
+    default 60
+
+endmenu
+
+menu "Датчик BME280"
+
+config SOIL_SENSOR_BME280_ENABLED
+    bool "Использовать датчик BME280"
+    default y
+
+config SOIL_SENSOR_BME280_SDA
+    int "GPIO SDA"
+    default 21
+
+config SOIL_SENSOR_BME280_SCL
+    int "GPIO SCL"
+    default 22
+
+config SOIL_SENSOR_BME280_I2C_ADDRESS
+    hex "I2C адрес"
+    default 0x76
+
+endmenu
 
 endmenu

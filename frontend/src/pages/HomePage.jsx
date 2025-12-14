@@ -34,14 +34,21 @@ function HomePage() {
     }
   }
 
+  if (!isAuthenticated || !userName) {
+    return (
+      <div className="home-page">
+        <div className="home-empty">
+          <p>🌿 Пожалуйста, войдите в систему для просмотра растений</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="home-page">
       <header className="home-header">
         <h1 className="home-title">🌱 Fitocube</h1>
         <p className="home-subtitle">Твои растения</p>
-        {userName && (
-          <p className="home-user">Пользователь: {userName}</p>
-        )}
       </header>
 
       {loading && (

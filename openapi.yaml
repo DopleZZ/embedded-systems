@@ -12,10 +12,6 @@ tags:
     description: Растения
   - name: friends
     description: Друзья
-  - name: stats
-    description: Статистика
-  - name: games
-    description: Игры
 servers:
   - url: http://localhost:8080
     description: Local development
@@ -57,8 +53,12 @@ paths:
             Set-Cookie:
               schema:
                 type: string
-                example: SESSION=abcd1234; HttpOnly; Path=/
-        '403':
+                example: JSESSIONID=abcd1234; HttpOnly; Path=/
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionUser'
+        '401':
           description: Неверный логин/пароль
   # Plant Management
   /plants/{plantId}:
@@ -83,19 +83,51 @@ paths:
                 $ref: '#/components/schemas/PlantStateDto'
         '404':
           description: Растение не найдено
+  /plants/{plantId}/auto-watering:
+    post:
+      summary: Включить/выключить автополив растения
+      operationId: updateAutoWatering
+      tags: [plants]
+      security:
+        - SessionCookie: []
+      parameters:
+        - name: plantId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutoWateringRequest'
+      responses:
+        '200':
+          description: Настройки автополива обновлены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlantStateDto'
+        '400':
+          description: Некорректные параметры автополива
+        '404':
+          description: Растение не найдено
   /plants/by-owner:
     get:
-      summary: Получить список растений пользователя
+      summary: Получить список растений текущего пользователя
       operationId: listPlantsByOwner
       tags: [plants]
       security:
         - SessionCookie: []
       parameters:
-        - name: ownerId
+        - name: ownerName
           in: query
-          required: true
+          required: false
+          deprecated: true
+          description: Параметр не используется; список определяется по текущей сессии.
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: Список растений
@@ -107,7 +139,7 @@ paths:
                   $ref: '#/components/schemas/PlantStateDto'
   /plants/by-friend-name:
     get:
-      summary: Посмотреть состояние растений друга по его имени
+      summary: Посмотреть состояние растений друга по его имени (в разработке)
       operationId: listPlantsByFriendName
       tags: [plants]
       security:
@@ -119,16 +151,8 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: Список растений друга
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PlantStateDto'
-        '404':
-          description: Пользователь или его растения не найдены
+        '501':
+          description: Эндпоинт ещё не реализован
   /plants/watering:
     post:
       summary: Запустить полив растения
@@ -147,17 +171,16 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                durationSeconds:
-                  type: integer
-                  minimum: 1
-                  description: Длительность полива в секундах (опционально)
+              $ref: '#/components/schemas/WateringRequest'
       responses:
         '202':
           description: Команда на полив отправлена
+        '400':
+          description: Некорректные параметры полива
         '404':
           description: Растение не найдено
+        '503':
+          description: MQTT недоступен, команда не отправлена
   /plants/claim:
     post:
       summary: Привязать устройство к текущему пользователю
@@ -170,16 +193,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - deviceUid
-              properties:
-                deviceUid:
-                  type: string
-                  description: Уникальный код устройства
-                nickname:
-                  type: string
-                  description: Имя растения
+              $ref: '#/components/schemas/ClaimRequest'
       responses:
         '201':
           description: Устройство привязано
@@ -188,7 +202,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/PlantStateDto'
         '400':
-          description: Устройство уже привязано
+          description: Некорректный запрос
+        '409':
+          description: Устройство уже привязано к другому пользователю
   # Friend Management
   /friends:
     get:
@@ -306,98 +322,17 @@ paths:
           description: Запрос отклонён
         '404':
           description: Запрос не найден
-  # Player Statistics
-  /stats/{userId}:
-    get:
-      summary: Получить статистику по наградам и мини-играм пользователя
-      operationId: getPlayerStats
-      tags: [stats]
-      security:
-        - SessionCookie: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Статистика пользователя
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PlayerStatsDto'
-        '404':
-          description: Пользователь не найден
-  # Mini Games & Challenges
-  /games/mood-battles:
-    post:
-      summary: Запустить батл настроения между двумя растениями
-      operationId: startMoodBattle
-      tags: [games]
-      security:
-        - SessionCookie: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateMoodBattleRequest'
-      responses:
-        '201':
-          description: Батл создан
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MoodBattleDto'
-        '400':
-          description: Нельзя запустить батл для этих растений
-  /games/mood-battles/{battleId}:
-    get:
-      summary: Получить статус батла настроения
-      operationId: getMoodBattle
-      tags: [games]
-      security:
-        - SessionCookie: []
-      parameters:
-        - name: battleId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Информация о батле
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MoodBattleDto'
-        '404':
-          description: Батл не найден
-  /games/wellbeing-challenge:
-    get:
-      summary: Посмотреть прогресс недельного челленджа "цветок счастья"
-      operationId: getWeeklyChallenge
-      tags: [games]
-      security:
-        - SessionCookie: []
-      parameters:
-        - name: plantId
-          in: query
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Статистика челленджа
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PlantChallengeDto'
-        '404':
-          description: Растение не участвует в челлендже
 components:
   schemas:
+    SessionUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        userName:
+          type: string
+        displayName:
+          type: string
     UserDto:
       type: object
       properties:
@@ -441,6 +376,47 @@ components:
         password:
           type: string
           format: password
+    ClaimRequest:
+      type: object
+      required:
+        - deviceUid
+      properties:
+        deviceUid:
+          type: string
+          description: Уникальный код устройства
+        nickname:
+          type: string
+          description: Имя растения
+    WateringRequest:
+      type: object
+      properties:
+        durationSeconds:
+          type: integer
+          minimum: 1
+          maximum: 600
+          description: Длительность полива в секундах (опционально)
+    AutoWateringRequest:
+      type: object
+      required:
+        - enabled
+      properties:
+        enabled:
+          type: boolean
+        thresholdPercent:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Порог влажности почвы для автополива (опционально)
+        durationSeconds:
+          type: integer
+          minimum: 1
+          maximum: 600
+          description: Длительность включения помпы (опционально)
+        cooldownSeconds:
+          type: integer
+          minimum: 0
+          maximum: 86400
+          description: Минимальный интервал между поливами (опционально)
     PlantStateDto:
       type: object
       properties:
@@ -482,6 +458,23 @@ components:
             - cold
         friendVisible:
           type: boolean
+        autoWateringEnabled:
+          type: boolean
+        autoWateringThresholdPercent:
+          type: integer
+          minimum: 0
+          maximum: 100
+        autoWateringDurationSeconds:
+          type: integer
+          minimum: 1
+          maximum: 600
+        autoWateringCooldownSeconds:
+          type: integer
+          minimum: 0
+          maximum: 86400
+        lastWateringAt:
+          type: string
+          format: date-time
       example:
         plantId: 42
         deviceUid: "esp32-d34-202501"
@@ -498,6 +491,7 @@ components:
           timestamp: "2025-01-25T12:00:00Z"
         mood: happy
         friendVisible: true
+        autoWateringEnabled: false
     CreateFriendRequest:
       type: object
       required:
