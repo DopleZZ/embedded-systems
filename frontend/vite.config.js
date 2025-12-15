@@ -25,6 +25,10 @@ export default defineConfig({
       '/games': {
         target: 'http://localhost:8080',
         changeOrigin: true,
+      },
+      '/stats': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
       }
     }
   }

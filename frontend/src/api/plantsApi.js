@@ -18,8 +18,31 @@ export const plantsApi = {
   },
 
   // Получить список растений пользователя
-  getPlantsByOwner: async (ownerName) => {
-    const response = await api.get(`/plants/by-owner?ownerName=${encodeURIComponent(ownerName)}`)
+  getPlantsByOwner: async () => {
+    const response = await api.get(`/plants/by-owner`)
+    return response.data
+  },
+
+  // Запустить полив растения
+  triggerWatering: async (plantId, durationSeconds) => {
+    const response = await api.post(`/plants/watering?plantId=${plantId}`, {
+      ...(durationSeconds && { durationSeconds }),
+    })
+    return response.data
+  },
+
+  // Привязать устройство
+  claimDevice: async (deviceUid, nickname) => {
+    const response = await api.post('/plants/claim', {
+      deviceUid,
+      ...(nickname && { nickname }),
+    })
+    return response.data
+  },
+
+  // Обновить настройки автополива
+  updateAutoWatering: async (plantId, autoWateringData) => {
+    const response = await api.post(`/plants/${plantId}/auto-watering`, autoWateringData)
     return response.data
   },
 }

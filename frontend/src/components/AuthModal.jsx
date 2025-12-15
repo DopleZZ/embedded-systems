@@ -19,14 +19,12 @@ function AuthModal({ onClose }) {
 
     try {
       if (isLogin) {
-        // Логин
-        await authApi.login(userName, password)
-        // После успешного логина получаем данные пользователя
-        // В реальном приложении бэкенд может вернуть UserDto, но пока используем то что есть
+        // Логин - бэкенд возвращает SessionUser с полями: id, userName, displayName
+        const sessionUser = await authApi.login(userName, password)
         login({
-          userName,
-          userId: null, // Бэкенд вернет после логина
-          displayName: displayName || userName,
+          userName: sessionUser.userName || userName,
+          userId: sessionUser.id, // SessionUser использует 'id'
+          displayName: sessionUser.displayName || displayName || userName,
         })
         onClose()
       } else {

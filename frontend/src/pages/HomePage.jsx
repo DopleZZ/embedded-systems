@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { plantsApi } from '../api/plantsApi'
 import { useAuth } from '../context/AuthContext'
 import PlantCard from '../components/PlantCard'
+import ClaimDeviceModal from '../components/ClaimDeviceModal'
 import './HomePage.css'
 
 function HomePage() {
@@ -9,21 +10,22 @@ function HomePage() {
   const [plants, setPlants] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showClaimModal, setShowClaimModal] = useState(false)
 
   useEffect(() => {
-    if (userName) {
+    if (isAuthenticated) {
       loadPlants()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userName])
+  }, [isAuthenticated])
 
   const loadPlants = async () => {
-    if (!userName) return
+    if (!isAuthenticated) return
     
     try {
       setLoading(true)
       setError(null)
-      const data = await plantsApi.getPlantsByOwner(userName)
+      const data = await plantsApi.getPlantsByOwner()
       setPlants(Array.isArray(data) ? data : [])
     } catch (err) {
       console.error('Ошибка загрузки растений:', err)
@@ -70,12 +72,34 @@ function HomePage() {
         </div>
       )}
 
-      {!loading && !error && plants.length > 0 && (
-        <div className="plants-grid">
-          {plants.map((plant) => (
-            <PlantCard key={plant.plantId} plant={plant} />
-          ))}
-        </div>
+      {!loading && !error && (
+        <>
+          <div className="home-actions">
+            <button
+              onClick={() => setShowClaimModal(true)}
+              className="claim-device-button"
+            >
+              ➕ Привязать устройство
+            </button>
+          </div>
+          {plants.length > 0 && (
+            <div className="plants-grid">
+              {plants.map((plant) => (
+                <PlantCard key={plant.plantId} plant={plant} />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {showClaimModal && (
+        <ClaimDeviceModal
+          onClose={() => setShowClaimModal(false)}
+          onSuccess={(plant) => {
+            setPlants([...plants, plant])
+            setShowClaimModal(false)
+          }}
+        />
       )}
     </div>
   )

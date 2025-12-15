@@ -36,6 +36,18 @@ function Navigation() {
                 >
                   Друзья
                 </Link>
+                <Link
+                  to="/games"
+                  className={`navigation-link ${isActive('/games') ? 'active' : ''}`}
+                >
+                  Игры
+                </Link>
+                <Link
+                  to="/stats"
+                  className={`navigation-link ${isActive('/stats') ? 'active' : ''}`}
+                >
+                  Статистика
+                </Link>
               </>
             )}
           </div>
