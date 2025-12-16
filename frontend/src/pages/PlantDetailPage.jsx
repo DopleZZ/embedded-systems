@@ -28,7 +28,11 @@ function PlantDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [watering, setWatering] = useState(false)
+  const [showWateringModal, setShowWateringModal] = useState(false)
   const [showAutoWateringModal, setShowAutoWateringModal] = useState(false)
+  const [wateringForm, setWateringForm] = useState({
+    durationSeconds: 10, // По умолчанию 10 секунд
+  })
   const [autoWateringForm, setAutoWateringForm] = useState({
     enabled: false,
     thresholdPercent: 30,
@@ -65,11 +69,16 @@ function PlantDetailPage() {
     }
   }
 
-  const handleWatering = async (durationSeconds = null) => {
+  const handleWatering = async (e) => {
+    e.preventDefault()
     setWatering(true)
     setError(null)
     try {
-      await plantsApi.triggerWatering(plantId, durationSeconds)
+      const duration = wateringForm.durationSeconds && wateringForm.durationSeconds > 0
+        ? wateringForm.durationSeconds
+        : undefined
+      await plantsApi.triggerWatering(plantId, duration)
+      setShowWateringModal(false)
       // Обновляем данные растения после полива
       setTimeout(() => {
         loadPlant()
@@ -166,11 +175,11 @@ function PlantDetailPage() {
 
         <div className="plant-actions">
           <button
-            onClick={() => handleWatering()}
+            onClick={() => setShowWateringModal(true)}
             disabled={watering}
             className="water-button"
           >
-            {watering ? '💧 Полив...' : '💧 Полить сейчас'}
+            💧 Полить
           </button>
           <button
             onClick={() => setShowAutoWateringModal(true)}
@@ -289,11 +298,54 @@ function PlantDetailPage() {
         </div>
       </div>
 
+      {showWateringModal && (
+        <div className="modal-overlay" onClick={() => setShowWateringModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowWateringModal(false)}>×</button>
+            <h2>💧 Полив растения</h2>
+            <form onSubmit={handleWatering} className="modal-form">
+              <label>
+                Длительность полива (секунды):
+                <input
+                  type="number"
+                  min="1"
+                  max="600"
+                  value={wateringForm.durationSeconds || ''}
+                  onChange={(e) =>
+                    setWateringForm({
+                      durationSeconds: e.target.value ? parseInt(e.target.value) : undefined,
+                    })
+                  }
+                  placeholder="Оставьте пустым для значения по умолчанию"
+                />
+                <small style={{ color: '#64748b', fontSize: '0.85rem' }}>
+                  Минимум: 1 сек, Максимум: 600 сек (10 минут). Оставьте пустым для значения по умолчанию.
+                </small>
+              </label>
+              <div className="modal-actions">
+                <button type="submit" className="save-button" disabled={watering}>
+                  {watering ? 'Полив...' : 'Запустить полив'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowWateringModal(false)}
+                  className="cancel-button"
+                  disabled={watering}
+                >
+                  Отмена
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {showAutoWateringModal && (
         <div className="modal-overlay" onClick={() => setShowAutoWateringModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowAutoWateringModal(false)}>×</button>
             <h2>⚙️ Настройки автополива</h2>
-            <div className="modal-form">
+            <form onSubmit={(e) => { e.preventDefault(); handleSaveAutoWatering(); }} className="modal-form">
               <label>
                 <input
                   type="checkbox"
@@ -354,17 +406,18 @@ function PlantDetailPage() {
                 </>
               )}
               <div className="modal-actions">
-                <button onClick={handleSaveAutoWatering} className="save-button">
+                <button type="submit" className="save-button">
                   Сохранить
                 </button>
                 <button
+                  type="button"
                   onClick={() => setShowAutoWateringModal(false)}
                   className="cancel-button"
                 >
                   Отмена
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}

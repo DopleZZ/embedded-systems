@@ -25,9 +25,11 @@ export const plantsApi = {
 
   // Запустить полив растения
   triggerWatering: async (plantId, durationSeconds) => {
-    const response = await api.post(`/plants/watering?plantId=${plantId}`, {
-      ...(durationSeconds && { durationSeconds }),
-    })
+    const requestBody = {}
+    if (durationSeconds && durationSeconds >= 1 && durationSeconds <= 600) {
+      requestBody.durationSeconds = durationSeconds
+    }
+    const response = await api.post(`/plants/watering?plantId=${plantId}`, requestBody)
     return response.data
   },
 
