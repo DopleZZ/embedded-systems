@@ -5,6 +5,7 @@ import './ClaimDeviceModal.css'
 function ClaimDeviceModal({ onClose, onSuccess }) {
   const [deviceUid, setDeviceUid] = useState('')
   const [nickname, setNickname] = useState('')
+  const [friendVisible, setFriendVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -19,7 +20,11 @@ function ClaimDeviceModal({ onClose, onSuccess }) {
     setError('')
 
     try {
-      const plant = await plantsApi.claimDevice(deviceUid.trim(), nickname.trim() || undefined)
+      const plant = await plantsApi.claimDevice(
+        deviceUid.trim(),
+        nickname.trim() || undefined,
+        friendVisible
+      )
       onSuccess(plant)
       onClose()
     } catch (err) {
@@ -62,6 +67,21 @@ function ClaimDeviceModal({ onClose, onSuccess }) {
             />
           </div>
 
+          <div className="claim-form-group claim-checkbox-group">
+            <label className="claim-checkbox-label" htmlFor="friendVisible">
+              <input
+                id="friendVisible"
+                type="checkbox"
+                checked={friendVisible}
+                onChange={(e) => setFriendVisible(e.target.checked)}
+              />
+              <span>Видно друзьям</span>
+            </label>
+            <p className="claim-checkbox-hint">
+              Друзья смогут видеть это растение в своих списках.
+            </p>
+          </div>
+
           {error && <div className="claim-error">{error}</div>}
 
           <button
@@ -78,5 +98,4 @@ function ClaimDeviceModal({ onClose, onSuccess }) {
 }
 
 export default ClaimDeviceModal
-
 

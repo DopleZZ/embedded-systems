@@ -23,12 +23,15 @@ public class PlantService {
 
     private final PlantStateRepository plantStateRepository;
     private final UserRepository userRepository;
+    private final PlantMeasurementService plantMeasurementService;
 
     public PlantService(PlantStateRepository plantStateRepository,
                         SessionService sessionService,
-                        UserRepository userRepository) {
+                        UserRepository userRepository,
+                        PlantMeasurementService plantMeasurementService) {
         this.plantStateRepository = plantStateRepository;
         this.userRepository = userRepository;
+        this.plantMeasurementService = plantMeasurementService;
     }
 
     public Optional<PlantStateDto> savePlant(PlantStateDto dto){
@@ -41,7 +44,9 @@ public class PlantService {
                     if (dto.getFriendVisible() != null) {
                         existing.setFriendVisible(dto.getFriendVisible());
                     }
-                    return plantStateRepository.save(existing);
+                    PlantStateDto saved = plantStateRepository.save(existing);
+                    plantMeasurementService.recordMeasurement(saved, dto.getMeasurements());
+                    return saved;
                 });
     }
 
@@ -95,6 +100,9 @@ public class PlantService {
             if (StringUtils.hasText(req.getNickname())) {
                 plant.setNickname(req.getNickname());
             }
+            if (req.getFriendVisible() != null) {
+                plant.setFriendVisible(req.getFriendVisible());
+            }
             return Optional.of(plantStateRepository.save(plant));
         }
 
@@ -102,6 +110,7 @@ public class PlantService {
         plant.setDeviceUid(req.getDeviceUid());
         plant.setNickname(req.getNickname());
         plant.setOwner(owner);
+        plant.setFriendVisible(req.getFriendVisible() != null ? req.getFriendVisible() : Boolean.FALSE);
         return Optional.of(plantStateRepository.save(plant));
     }
 

@@ -344,11 +344,43 @@ static float compute_soil_percent(int raw)
 {
     float dry = (float)CONFIG_SOIL_SENSOR_SOIL_DRY_RAW;
     float wet = (float)CONFIG_SOIL_SENSOR_SOIL_WET_RAW;
-    if (wet <= dry)
+    if (wet == dry)
     {
         return 0.0f;
     }
-    float percent = ((float)raw - dry) / (wet - dry) * 100.0f;
+    // Калибровочная точка: raw 1800 -> 75%.
+    const float ref_raw = 1800.0f;
+    const float ref_percent = 75.0f;
+    float percent = 0.0f;
+    auto is_between = [](float value, float a, float b) {
+        return (value >= a && value <= b) || (value >= b && value <= a);
+    };
+    auto lerp_percent = [](float value, float x0, float y0, float x1, float y1) {
+        if (x0 == x1)
+        {
+            return y0;
+        }
+        return y0 + (value - x0) * (y1 - y0) / (x1 - x0);
+    };
+    if (ref_percent > 0.0f && ref_percent < 100.0f && is_between(ref_raw, dry, wet))
+    {
+        if (is_between((float)raw, dry, ref_raw))
+        {
+            percent = lerp_percent((float)raw, dry, 0.0f, ref_raw, ref_percent);
+        }
+        else if (is_between((float)raw, ref_raw, wet))
+        {
+            percent = lerp_percent((float)raw, ref_raw, ref_percent, wet, 100.0f);
+        }
+        else
+        {
+            percent = lerp_percent((float)raw, dry, 0.0f, wet, 100.0f);
+        }
+    }
+    else
+    {
+        percent = lerp_percent((float)raw, dry, 0.0f, wet, 100.0f);
+    }
     if (percent < 0.0f)
     {
         percent = 0.0f;

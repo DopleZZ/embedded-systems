@@ -8,4 +8,6 @@ public class ClaimRequest {
     private String deviceUid;
 
     private String nickname;
+
+    private Boolean friendVisible;
 }

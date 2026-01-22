@@ -34,11 +34,15 @@ export const plantsApi = {
   },
 
   // Привязать устройство
-  claimDevice: async (deviceUid, nickname) => {
-    const response = await api.post('/plants/claim', {
+  claimDevice: async (deviceUid, nickname, friendVisible) => {
+    const payload = {
       deviceUid,
       ...(nickname && { nickname }),
-    })
+    }
+    if (friendVisible !== undefined) {
+      payload.friendVisible = friendVisible
+    }
+    const response = await api.post('/plants/claim', payload)
     return response.data
   },
 
@@ -111,4 +115,3 @@ export const friendsApi = {
 }
 
 export default api
-

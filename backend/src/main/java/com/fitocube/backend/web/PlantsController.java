@@ -1,13 +1,19 @@
 package com.fitocube.backend.web;
 
 import com.fitocube.backend.model.PlantStateDto;
+import com.fitocube.backend.model.PlantMeasurementDto;
 import com.fitocube.backend.model.request.AutoWateringRequest;
 import com.fitocube.backend.model.request.ClaimRequest;
 import com.fitocube.backend.model.request.WateringRequest;
 import com.fitocube.backend.model.session.SessionUser;
+import com.fitocube.backend.services.PlantMeasurementService;
 import com.fitocube.backend.services.PlantService;
 import com.fitocube.backend.services.SessionService;
 import com.fitocube.backend.services.WateringService;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +36,16 @@ public class PlantsController {
     private final PlantService plantService;
     private final SessionService sessionService;
     private final WateringService wateringService;
+    private final PlantMeasurementService plantMeasurementService;
 
-    public PlantsController(PlantService plantService, SessionService sessionService, WateringService wateringService) {
+    public PlantsController(PlantService plantService,
+                            SessionService sessionService,
+                            WateringService wateringService,
+                            PlantMeasurementService plantMeasurementService) {
         this.plantService = plantService;
         this.sessionService = sessionService;
         this.wateringService = wateringService;
+        this.plantMeasurementService = plantMeasurementService;
     }
 
     @GetMapping("/{plantId}")
@@ -58,6 +69,43 @@ public class PlantsController {
     @GetMapping("/by-friend-name")
     public ResponseEntity<Set<PlantStateDto>> listPlantsByFriendName(@RequestParam("friendName") String friendName) {
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Not implemented yet");
+    }
+
+    @GetMapping("/{plantId}/measurements")
+    public ResponseEntity<List<PlantMeasurementDto>> getPlantMeasurements(@PathVariable @NonNull Long plantId,
+                                                                           @RequestParam(value = "from", required = false) String from,
+                                                                           @RequestParam(value = "to", required = false) String to,
+                                                                           @RequestParam(value = "limit", required = false) Integer limit,
+                                                                           @AuthenticationPrincipal SessionUser user) {
+        var plant = plantService.getPlantById(plantId, user);
+        if (plant.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Instant fromInstant = null;
+        Instant toInstant = null;
+        if (from != null) {
+            fromInstant = parseInstant(from, "from");
+        }
+        if (to != null) {
+            toInstant = parseInstant(to, "to");
+        }
+
+        if (fromInstant == null && toInstant == null && (limit == null || limit <= 0)) {
+            toInstant = Instant.now();
+            fromInstant = toInstant.minus(Duration.ofHours(24));
+        } else if (fromInstant == null && toInstant != null) {
+            fromInstant = toInstant.minus(Duration.ofHours(24));
+        } else if (fromInstant != null && toInstant == null) {
+            toInstant = Instant.now();
+        }
+
+        if (fromInstant != null && toInstant != null && fromInstant.isAfter(toInstant)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "from must be before to");
+        }
+
+        var measurements = plantMeasurementService.getMeasurements(plantId, fromInstant, toInstant, limit);
+        return ResponseEntity.ok(measurements);
     }
 
     @PostMapping("/claim")
@@ -119,5 +167,13 @@ public class PlantsController {
                         request.getCooldownSeconds())
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    private Instant parseInstant(String value, String field) {
+        try {
+            return Instant.parse(value);
+        } catch (DateTimeParseException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, field + " must be ISO-8601 instant");
+        }
     }
 }

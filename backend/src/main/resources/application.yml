@@ -11,9 +11,9 @@ mqtt:
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://azat222.ru:5555/embedded}
-    username: ${DB_USERNAME:embedded}
-    password: ${DB_PASSWORD:embedded}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:}
   jpa:
     hibernate:
       ddl-auto: create

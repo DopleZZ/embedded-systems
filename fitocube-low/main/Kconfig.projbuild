@@ -75,7 +75,7 @@ config SOIL_SENSOR_MQTT_DATA_TOPIC
 
 config SOIL_SENSOR_PUBLISH_INTERVAL_MS
     int "Интервал публикации (мс)"
-    default 300000
+    default 150000
 
 endmenu
 
