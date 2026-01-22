@@ -42,6 +42,7 @@ services:
       DB_URL: jdbc:postgresql://db:5432/embedded
       DB_USERNAME: embedded
       DB_PASSWORD: embedded
+      APP_CORS_ALLOWED_ORIGINS: http://localhost:3000
     depends_on:
       - db
       - mosquitto

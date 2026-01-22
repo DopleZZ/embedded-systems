@@ -2,10 +2,10 @@ server:
   port: 8080
 
 mqtt:
-  broker-uri: tcp://azat222.ru:1883
-  client-id: fitocube-backend
-  command-topic: soil/cmd
-  data-topic: soil/data
+  broker-uri: ${BROKER_URI:tcp://azat222.ru:1883}
+  client-id: ${CLIENT_ID:fitocube-backend}
+  command-topic: ${COMMAND_TOPIC:soil/cmd}
+  data-topic: ${DATA_TOPIC:soil/data}
   command-payload: get_info
   response-timeout: 5s
 
@@ -27,3 +27,7 @@ spring:
     init:
       mode: never
       data-locations: classpath:data.sql
+
+app:
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000}

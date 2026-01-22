@@ -6,31 +6,11 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/auth': {
+      '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
-      '/plants': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-      '/friends': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-      '/stats': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-      '/games': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      },
-      '/stats': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      }
     }
   }
 })
-
